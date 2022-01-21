@@ -1,0 +1,151 @@
+{
+  "theme": {
+    "default": "默认",
+    "colorful": "彩色",
+    "light": "浅色",
+    "dark": "深色"
+  },
+  "shared": {
+    "notification": {
+      "disconnected": "无法连接到服务。",
+      "server": "服务器内部错误。",
+      "unauthorized": "您没有当前资源的操作权限。",
+      "timeout": "会话过期，请重新登陆。",
+      "conflict": "您的帐号在其它地方登录，您已被迫下线。",
+      "confirm": "是否确定要执行此操作？",
+      "success": "操作成功。",
+      "fail": "操作失败。"
+    },
+    "operation": {
+      "add": "新建",
+      "edit": "编辑",
+      "delete": "删除",
+      "deletes": "删除选中项",
+      "filter": "筛选",
+      "reset": "重置",
+      "reload": "重新加载",
+      "forward": "前进",
+      "back": "后退"
+    },
+    "dialog": {
+      "title": "消息",
+      "ok": "确定",
+      "cancel": "取消",
+      "yes": "是",
+      "no": "否",
+      "close": "关闭"
+    },
+    "data": {
+      "empty": "没有记录",
+      "selected": "{len} 条记录被选中",
+      "page": {
+        "first": "第一页",
+        "previous": "上一页",
+        "next": "下一页",
+        "last": "最后一页",
+        "size": "每页记录：",
+        "range": "第 {from} - {to} 条记录，共 {total} 条。"
+      }
+    }
+  },
+  "layouts": {
+    "auth": {
+      "login": {
+        "language": "语言",
+        "account": "账号",
+        "password": "密码",
+        "submit": "登录",
+        "fail": "账号不存在或密码错误。",
+        "frozen": "账号已被冻结，请与管理员联系。"
+      },
+      "expire": {
+        "title": "密码已过期",
+        "subtitle": "您的密码已过期。请确认您的当前密码，然后设置新的密码。",
+        "current": "当前密码",
+        "replacement": "新密码",
+        "confirm": "确认新密码",
+        "continue": "继续",
+        "success": "操作成功。请使用新的密码重新登录。",
+        "invalid": {
+          "current": "当前密码不正确。",
+          "replacement": "新密码不合法。"
+        }
+      },
+      "initial": {
+        "title": "创建新密码",
+        "subtitle": "您首次登录系统，请创建一个新的密码。",
+        "replacement": "新密码",
+        "confirm": "确认新密码",
+        "continue": "继续",
+        "success": "操作成功。请使用新的密码重新登录。",
+        "invalid": {
+          "operation": "账号不允许此操作。",
+          "content": "新密码不合法。"
+        }
+      }
+    },
+    "admin": {
+      "fixed": "固定菜单",
+      "folded": "折叠菜单",
+      "fullscreen": "全屏",
+      "fullscreen_exit": "退出全屏",
+      "language": "语言",
+      "logout": "注销",
+      "theme": "主题",
+      "profile": "设置",
+      "password": {
+        "title": "修改密码",
+        "current": "当前密码",
+        "replacement": "新密码",
+        "confirm": "确认新密码",
+        "success": "操作成功。请使用新的密码重新登录。",
+        "invalid": {
+          "current": "当前密码不正确。",
+          "replacement": "新密码不合法。"
+        }
+      },
+      "message": {
+        "tag": "消息",
+        "title": "站内消息通知",
+        "empty": "您暂时没有站内消息",
+        "more": "查看更多",
+        "notify": "您有一条新消息。",
+        "exception": "无法打开消息。",
+        "back": "返回列表",
+        "subject": "主题内容",
+        "source": "消息源",
+        "time": "时间",
+        "flag": "状态",
+        "read": "已读",
+        "unread": "未读",
+        "markas": "标记为",
+        "receive": "接收"
+      },
+      "menu": {
+        "basic": "基础信息",
+        "role": "角色管理",
+        "user": "用户管理"
+      }
+    }
+  },
+  "routes": {
+    "basic": {
+      "role": {
+        "name": "角色名",
+        "remark": "备注",
+        "menu": "权限",
+        "conflict": "角色名已存在。",
+        "gone": "该角色已被删除。"
+      },
+      "user": {
+        "name": "用户名",
+        "account": "账号",
+        "role": "角色",
+        "password": "重置密码",
+        "conflict_name": "用户名已存在。",
+        "conflict_account": "账号已存在。",
+        "gone": "该用户已被删除。"
+      }
+    }
+  }
+}

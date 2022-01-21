@@ -1,0 +1,174 @@
+.mat-sidenav-container {
+  height: 100%;
+
+  .mat-sidenav {
+    padding: 20px;
+    width: 280px;
+
+    .mat-form-field {
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 8px;
+      }
+    }
+
+    .mat-button-base {
+      margin-top: 8px;
+      width: 100%;
+    }
+  }
+}
+
+.grid {
+  display: flex;
+  position: relative;
+  height: 100%;
+  flex-direction: column;
+
+  >.row-fill {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+
+  >.row-auto {
+    flex: 0 0 auto;
+  }
+
+  .mat-toolbar {
+
+    &+.mat-divider {
+      margin-top: -1px;
+    }
+
+    button {
+      margin-left: 8px;
+
+      &:first-child {
+        margin-left: 0;
+
+        &.mat-button {
+          margin-left: -8px;
+        }
+      }
+    }
+
+    span {
+      font-size: 14px;
+
+      &:first-child {
+        margin-left: 8px;
+      }
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+  }
+
+  .mat-table {
+    width: 100%;
+
+    th,
+    td {
+      padding-right: 56px;
+      white-space: nowrap;
+
+      &:first-child {
+        padding-right: 24px;
+        width: 16px;
+      }
+
+      &:nth-child(2) {
+        width: 100%;
+
+        &:not(th) {
+          opacity: .7;
+        }
+
+        &.bold {
+          font-weight: bold;
+          opacity: 1;
+        }
+      }
+
+      &:last-child {
+        padding-right: 24px;
+      }
+
+      &.text-center {
+        text-align: center;
+      }
+
+      a {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .header {
+    margin-left: 24px;
+    margin-right: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:first-child {
+      margin-left: 8px;
+    }
+  }
+
+  .source {
+    display: flex;
+    margin: 16px 24px;
+    flex-direction: row;
+    align-items: center;
+
+    >img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    >div {
+      margin: 0 16px;
+
+      >p {
+        margin: 0;
+      }
+    }
+  }
+
+  .mat-card {
+    box-shadow: none;
+
+    .mat-card-header {
+      align-items: center;
+
+      >:last-child {
+        flex: 1 0 auto;
+        text-align: right;
+      }
+
+      ::ng-deep>.mat-card-header-text {
+        overflow: hidden;
+
+        >* {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          &.mat-card-subtitle {
+            margin-bottom: 0;
+
+            span {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

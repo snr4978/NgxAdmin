@@ -1,0 +1,9 @@
+{
+  "appName": "Admin",
+  "appFullName": "Kean Admin",
+  "appLogo": "cloud",
+  "appLogoAssets": false,
+  "appDescription": "基于 Angular Material 的管理系统模板",
+  "appCopyright": "© 2021 snr4978@163.com",
+  "htmlTitle": "Kean Admin"
+}

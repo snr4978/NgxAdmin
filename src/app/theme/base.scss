@@ -1,0 +1,137 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+@import 'default.scss';
+@import 'colorful.scss';
+@import 'dark.scss';
+@import 'light.scss';
+
+::-ms-clear,
+::-ms-reveal {
+  display: none;
+}
+
+:focus {
+  outline: 0;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, Microsoft YaHei, sans-serif;
+  line-height: normal;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+input {
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  &[type=file] {
+    display: none !important;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+textarea {
+  resize: none !important;
+}
+
+.media-monitor {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-button,
+  ::-webkit-scrollbar-corner,
+  ::-webkit-resizer {
+    display: none;
+  }
+}
+
+.clearfix {
+  &::after {
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+    clear: both;
+  }
+}
+
+.unlimited {
+  min-width: initial !important;
+  min-height: initial !important;
+  max-width: initial !important;
+  max-height: initial !important;
+}
+
+.media-mobile {
+  .mat-paginator {
+    .mat-paginator-container {
+      justify-content: center;
+
+      .mat-paginator-page-size,
+      .mat-paginator-range-label {
+        display: none;
+      }
+    }
+  }
+}
+
+.mat-file-upload-queue {
+  display: block;
+
+  .mat-file-upload {
+    display: block;
+
+    .mat-card {
+      border-radius: 0;
+      box-shadow: none !important;
+
+      .file-summary {
+        &:first-child {
+          display: block;
+          box-sizing: border-box;
+          padding-right: 80px;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &:not(:first-child) {
+          display: none;
+        }
+      }
+
+      .upload-progress {
+        margin-right: -8px;
+
+        .mat-progress-bar {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+
+  br,
+  .mat-raised-button {
+    display: none;
+  }
+}

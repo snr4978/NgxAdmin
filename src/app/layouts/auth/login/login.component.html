@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <button mat-icon-button [matMenuTriggerFor]="$language" matTooltip="{{ 'layouts.auth.login.language' | translate }}">
+    <mat-icon>language</mat-icon>
+  </button>
+  <mat-menu #$language="matMenu">
+    <button mat-menu-item *ngFor="let item of languages" (click)="language=item.lang">
+      <span class="mat-icon flag" [style.backgroundImage]="'url(assets/images/'+item.lang+'.svg)'"></span>
+      <span>{{ item.desc }}</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<div>
+  <mat-card>
+    <mat-card-title>{{ settings.appFullName | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ settings.appDescription | translate }}</mat-card-subtitle>
+    <mat-card-content>
+      <form #form autocomplete="off" [formGroup]="formGroup">
+        <mat-form-field appearance="outline" hideRequiredMarker="true">
+          <mat-label>{{ 'layouts.auth.login.account' | translate }}</mat-label>
+          <input matInput formControlName="account" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" hideRequiredMarker="true">
+          <mat-label>{{ 'layouts.auth.login.password' | translate }}</mat-label>
+          <input matInput type="password" formControlName="password" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading||formGroup.invalid" (click)="login()">{{ 'layouts.auth.login.submit' | translate | uppercase }}</button>
+      </form>
+    </mat-card-content>
+    <mat-card-footer>{{ settings.appCopyright | translate }}</mat-card-footer>
+  </mat-card>
+</div>

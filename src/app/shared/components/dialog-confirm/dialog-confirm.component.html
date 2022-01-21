@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{ 'shared.dialog.title' | translate }}</h2>
+<div mat-dialog-content>
+  <p [innerHTML]="content"></p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{ 'shared.dialog.yes' | translate | uppercase }}</button>
+  <button mat-button [mat-dialog-close]="false">{{ 'shared.dialog.no' | translate | uppercase }}</button>
+</div>

@@ -1,0 +1,134 @@
+$theme-default-primary:mat-palette($mat-blue);
+$theme-default-accent:mat-palette($mat-amber, A200, A100, A400);
+$theme-default-warn:mat-palette($mat-red);
+
+$theme-default:mat-light-theme($theme-default-primary, $theme-default-accent, $theme-default-warn);
+
+.theme-default {
+  @include angular-material-theme($theme-default);
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track-piece {
+    background-color: map-get($mat-grey, 200);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: map-get($mat-grey, 400);
+
+    &:hover {
+      background-color: map-get($mat-grey, 500);
+    }
+  }
+
+  .app-background {
+    background-color: mat-color(map-get($theme-default, background), background) !important;
+  }
+
+  .app-background-card {
+    background-color: mat-color(map-get($theme-default, background), card) !important;
+  }
+
+  .app-background-focus {
+    background-color: mat-color(map-get($theme-default, background), hover) !important;
+  }
+
+  .app-background-primary {
+    background-color: mat-color($theme-default-primary) !important;
+  }
+
+  .app-background-primary-alpha {
+    background-color: rgba($color: mat-color($theme-default-primary), $alpha: .12) !important;
+  }
+
+  .app-background-accent {
+    background-color: mat-color($theme-default-accent) !important;
+  }
+
+  .app-background-accent-alpha {
+    background-color: rgba($color: mat-color($theme-default-accent), $alpha: .12) !important;
+  }
+
+  .app-background-warn {
+    background-color: mat-color($theme-default-warn) !important;
+  }
+
+  .app-background-warn-alpha {
+    background-color: rgba($color: mat-color($theme-default-warn), $alpha: .12) !important;
+  }
+
+  .app-foreground {
+    color: mat-color(map-get($theme-default, foreground), text) !important;
+  }
+
+  .app-foreground-primary {
+    color: mat-color($theme-default-primary) !important;
+  }
+
+  .app-foreground-secondary {
+    color: mat-color(map-get($theme-default, foreground), secondary-text) !important;
+  }
+
+  .app-foreground-accent {
+    color: mat-color($theme-default-accent) !important;
+  }
+
+  .app-foreground-warn {
+    color: mat-color($theme-default-warn) !important;
+  }
+
+  .app-foreground-disabled {
+    color: mat-color(map-get($theme-default, foreground), disabled-text) !important;
+  }
+
+  .app-layout {
+    @extend .mat-app-background;
+
+
+    .app-sidenav-container {
+      .app-sidenav:not(.mat-drawer-end) {
+        border-right-width: 0;
+
+        .app-header {
+          background-color: mat-color($mat-blue-gray, 900);
+          border-bottom-color: mat-color($mat-blue-gray, 900);
+          color: mat-color($mat-gray, A100);
+        }
+
+        .app-body {
+          background-color: mat-color($mat-blue-gray, 900);
+
+          .app-menu {
+            .app-menu-item {
+
+              &:hover,
+              &.focus {
+                background-color: mat-color($mat-gray, 900);
+              }
+
+              &>a {
+                color: mat-color($mat-gray, 400);
+              }
+
+              &.active>a {
+                color: mat-color($mat-gray, A100);
+              }
+            }
+          }
+        }
+      }
+
+      .app-sidenav-content {
+        .app-header {
+          background-color: mat-color($mat-gray, A100);
+          border-bottom-color: mat-color($mat-gray, 300);
+        }
+
+        .app-body {
+          .ng-bar {
+            background-color: mat-color($theme-default-primary);
+          }
+        }
+      }
+    }
+  }
+}

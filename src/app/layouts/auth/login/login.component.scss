@@ -1,0 +1,46 @@
+.mat-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  flex-direction: row-reverse;
+  background-color: transparent;
+
+  &+div {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-flow: row wrap;
+    align-items: center;
+    place-content: center;
+
+    .mat-card {
+      max-width: 480px;
+      background-color: transparent;
+      box-shadow: none;
+
+      .mat-card-title,
+      .mat-card-subtitle,
+      .mat-card-footer {
+        text-align: center;
+      }
+
+      .mat-card-title {
+        margin-bottom: 28px;
+      }
+
+      .mat-card-content {
+        margin-top: 24px;
+
+        .mat-form-field {
+          width: 100%;
+        }
+
+        .mat-button-base {
+          width: 100%;
+          padding-top: .25em;
+          padding-bottom: .25em;
+        }
+      }
+    }
+  }
+}

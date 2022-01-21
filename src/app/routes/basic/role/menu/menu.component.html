@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ 'routes.basic.role.menu' | translate}}</h2>
+<div mat-dialog-content>
+  <div class="loading" *ngIf="loading;else $tree">
+    <mat-spinner></mat-spinner>
+  </div>
+  <ng-template #$tree>
+    <mat-tree [dataSource]="tree" [treeControl]="ctrl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="25">
+        <button mat-icon-button disabled></button>
+        <mat-checkbox [checked]="selection.isSelected(node.id)" (change)="toggle(node)">{{ node.name | translate }}
+        </mat-checkbox>
+      </mat-tree-node>
+      <mat-tree-node *matTreeNodeDef="let node; when: internal" matTreeNodePadding matTreeNodePaddingIndent="25">
+        <button mat-icon-button matTreeNodeToggle>
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{ctrl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <mat-checkbox [checked]="selected(node,false)" [indeterminate]="selected(node,true)" (change)="toggle(node)">
+          {{ node.name | translate }}</mat-checkbox>
+      </mat-tree-node>
+    </mat-tree>
+  </ng-template>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button color="primary" (click)="save()">{{ 'shared.dialog.ok' | translate | uppercase }}</button>
+  <button mat-button mat-dialog-close cdkFocusInitial>{{ 'shared.dialog.cancel' | translate | uppercase }}</button>
+</div>

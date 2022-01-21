@@ -1,0 +1,128 @@
+$theme-dark-primary:mat-palette($mat-blue, 200);
+$theme-dark-accent:mat-palette($mat-amber, A200, A100, A400);
+$theme-dark-warn:mat-palette($mat-deep-orange);
+
+$theme-dark:mat-dark-theme($theme-dark-primary, $theme-dark-accent, $theme-dark-warn);
+
+.theme-dark {
+  @include angular-material-theme($theme-dark);
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track-piece {
+    background-color: map-get($mat-grey, 700);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: map-get($mat-grey, 500);
+
+    &:hover {
+      background-color: map-get($mat-grey, 400);
+    }
+  }
+
+  .app-background {
+    background-color: mat-color(map-get($theme-dark, background), background) !important;
+  }
+
+  .app-background-card {
+    background-color: mat-color(map-get($theme-dark, background), card) !important;
+  }
+
+  .app-background-focus {
+    background-color: mat-color(map-get($theme-dark, background), hover) !important;
+  }
+
+  .app-background-primary {
+    background-color: mat-color($theme-dark-primary) !important;
+  }
+
+  .app-background-primary-alpha {
+    background-color: rgba($color: mat-color($theme-dark-primary), $alpha: .12) !important;
+  }
+
+  .app-background-accent {
+    background-color: mat-color($theme-dark-accent) !important;
+  }
+
+  .app-background-accent-alpha {
+    background-color: rgba($color: mat-color($theme-dark-accent), $alpha: .12) !important;
+  }
+
+  .app-background-warn {
+    background-color: mat-color($theme-dark-warn) !important;
+  }
+
+  .app-background-warn-alpha {
+    background-color: rgba($color: mat-color($theme-dark-warn), $alpha: .12) !important;
+  }
+
+  .app-foreground {
+    color: mat-color(map-get($theme-dark, foreground), text) !important;
+  }
+
+  .app-foreground-primary {
+    color: mat-color($theme-dark-primary) !important;
+  }
+
+  .app-foreground-secondary {
+    color: mat-color(map-get($theme-dark, foreground), secondary-text) !important;
+  }
+
+  .app-foreground-accent {
+    color: mat-color($theme-dark-accent) !important;
+  }
+
+  .app-foreground-warn {
+    color: mat-color($theme-dark-warn) !important;
+  }
+
+  .app-foreground-disabled {
+    color: mat-color(map-get($theme-dark, foreground), disabled-text) !important;
+  }
+
+  .app-layout {
+    @extend .mat-app-background;
+
+    .app-sidenav-container {
+      .app-sidenav:not(.mat-drawer-end) {
+        border-right-width: 0;
+
+        .app-header {
+          border-bottom-color: mat-color($mat-gray, 900);
+        }
+
+        .app-body {
+          .app-menu {
+            .app-menu-item {
+
+              &:hover,
+              &.focus {
+                background-color: rgba($color: mat-color($mat-gray, 700), $alpha: .3)
+              }
+
+              &>a {
+                color: mat-color($mat-gray, 400);
+              }
+
+              &.active>a {
+                color: mat-color($mat-blue, 200);
+              }
+            }
+          }
+        }
+      }
+
+      .app-sidenav-content {
+        .app-header {
+          border-bottom-color: mat-color($mat-gray, 900);
+        }
+
+        .app-body {
+          .ng-bar {
+            background-color: mat-color($theme-dark-primary);
+          }
+        }
+      }
+    }
+  }
+}

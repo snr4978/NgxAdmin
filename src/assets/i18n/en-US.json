@@ -1,0 +1,151 @@
+{
+  "theme": {
+    "default": "Default",
+    "colorful": "Colorful",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "shared": {
+    "notification": {
+      "disconnected": "Cannot connect to server.",
+      "server": "Internal server error.",
+      "unauthorized": "No permission.",
+      "timeout": "Session timeout.",
+      "conflict": "You have been disconnected as someone has signed in with your ID in elsewhere.",
+      "confirm": "Are you sure you want to continue?",
+      "success": "The operation completed successfully.",
+      "fail": "The operation failed."
+    },
+    "operation": {
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deletes": "Delete selected item(s)",
+      "filter": "Filter",
+      "reset": "Reset",
+      "reload": "Reload",
+      "forward": "Forward",
+      "back": "Back"
+    },
+    "dialog": {
+      "title": "Infomation",
+      "ok": "Ok",
+      "cancel": "Cancel",
+      "yes": "Yes",
+      "no": "No",
+      "close": "Close"
+    },
+    "data": {
+      "empty": "No records found",
+      "selected": "{len} item(s) selected",
+      "page": {
+        "first": "First page",
+        "previous": "Previous page",
+        "next": "Next page",
+        "last": "Last page",
+        "size": "Item(s) per page:",
+        "range": "{from} - {to} of {total} item(s)."
+      }
+    }
+  },
+  "layouts": {
+    "auth": {
+      "login": {
+        "language": "Language",
+        "account": "Account",
+        "password": "Password",
+        "submit": "Login",
+        "fail": "Invalid account or password.",
+        "frozen": "Account has been locked for security purposes."
+      },
+      "expire": {
+        "title": "Password Expired",
+        "subtitle": "Please select a new password to continue.",
+        "current": "Current Password",
+        "replacement": "New Password",
+        "confirm": "Congirm Password",
+        "continue": "Continue",
+        "success": "The operation completed successfully. Now you can login with new password.",
+        "invalid": {
+          "current": "Current password is not correct.",
+          "replacement": "New password is invalid."
+        }
+      },
+      "initial": {
+        "title": "Create Password",
+        "subtitle": "The first time you login, please create a new password.",
+        "replacement": "New Password",
+        "confirm": "Congirm Password",
+        "continue": "Continue",
+        "success": "The operation completed successfully. Now you can login with new password.",
+        "invalid": {
+          "operation": "Your account does not allow this operation.",
+          "content": "New password is invalid."
+        }
+      }
+    },
+    "admin": {
+      "fixed": "Fix menu",
+      "folded": "Fold menu",
+      "fullscreen": "Fullscreen",
+      "fullscreen_exit": "Exit fullscreen",
+      "language": "Language",
+      "logout": "Logout",
+      "theme": "Theme",
+      "profile": "Profile",
+      "password": {
+        "title": "Modify Password",
+        "current": "Current Password",
+        "replacement": "New Password",
+        "confirm": "Congirm Password",
+        "success": "The operation completed successfully. Now you can login with new password.",
+        "invalid": {
+          "current": "Current password is not correct.",
+          "replacement": "New password is invalid."
+        }
+      },
+      "message": {
+        "tag": "Message",
+        "title": "Site Messages",
+        "empty": "No site message is received.",
+        "more": "View More",
+        "notify": "You have a new message.",
+        "exception": "Cannot open message.",
+        "back": "Back to list",
+        "subject": "Subject",
+        "source": "Source",
+        "time": "Time",
+        "flag": "Status",
+        "read": "Read",
+        "unread": "Unread",
+        "markas": "Mark as ",
+        "receive": "Receive"
+      },
+      "menu": {
+        "basic": "Infomation",
+        "role": "Roles",
+        "user": "Users"
+      }
+    }
+  },
+  "routes": {
+    "basic": {
+      "role": {
+        "name": "Name",
+        "remark": "Remark",
+        "menu": "Permission",
+        "conflict": "The name is already exists.",
+        "gone": "The role is already deleted."
+      },
+      "user": {
+        "name": "Name",
+        "account": "Account",
+        "role": "Role",
+        "password": "Reset password",
+        "conflict_name": "The name is already exists.",
+        "conflict_account": "The account is already exists.",
+        "gone": "The user is already deleted."
+      }
+    }
+  }
+}

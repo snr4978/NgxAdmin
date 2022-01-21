@@ -1,0 +1,97 @@
+<mat-sidenav-container hasBackdrop="true">
+  <mat-sidenav #$filter mode="over" position="end">
+    <form autocomplete="off" [formGroup]="filter.form">
+      <mat-form-field>
+        <mat-label>{{ 'routes.basic.user.name' | translate }}</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'routes.basic.user.account' | translate }}</mat-label>
+        <input matInput formControlName="account">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'routes.basic.user.role' | translate }}</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let item of roles" [value]="item.id">{{item.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <button mat-flat-button color="primary"
+      (click)="search();$filter.toggle()">{{ 'shared.operation.filter' | translate | uppercase }}</button>
+    <button mat-stroked-button
+      (click)="reset();$filter.toggle()">{{ 'shared.operation.reset' | translate | uppercase }}</button>
+  </mat-sidenav>
+  <mat-sidenav-content [loading]="loading">
+    <div class="row-auto">
+      <mat-toolbar *ngIf="selection.hasValue();else $toolbar" class="app-background-primary-alpha">
+        <span
+          class="spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : selection.selected.length } }}</span>
+        <button mat-icon-button matTooltip="{{ 'shared.operation.deletes' | translate }}" (click)="delete()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-toolbar>
+      <ng-template #$toolbar>
+        <mat-toolbar class="app-background-card">
+          <button mat-button color="primary"
+            (click)="edit()">{{ 'shared.operation.add' | translate | uppercase }}</button>
+          <button mat-button color="primary"
+            (click)="refresh()">{{ 'shared.operation.reload' | translate | uppercase }}</button>
+          <span class="spacer"></span>
+          <button mat-icon-button matTooltip="{{ 'shared.operation.filter' | translate }}" (click)="$filter.toggle()">
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </mat-toolbar>
+        <mat-divider></mat-divider>
+      </ng-template>
+    </div>
+    <div class="row-fill">
+      <table mat-table [dataSource]="rows" matSort (matSortChange)="refresh($event)">
+        <ng-container matColumnDef="select" sticky>
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="select($event)"
+              [checked]="selection.hasValue()&&selection.selected.length==rows.length"
+              [indeterminate]="selection.hasValue()&&selection.selected.length!=rows.length"></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'routes.basic.user.name' | translate }}</th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="account">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'routes.basic.user.account' | translate }}</th>
+          <td mat-cell *matCellDef="let row"> {{row.account}} </td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'routes.basic.user.role' | translate }}</th>
+          <td mat-cell *matCellDef="let row"> {{ row.role | field : 'name' | join }} </td>
+        </ng-container>
+        <ng-container matColumnDef="id" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="{{ 'routes.basic.user.password' | translate }}"
+              (click)="password(row.id)">
+              <mat-icon>lock_open</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        <tr class="mat-row" [hidden]="loading" *matNoDataRow>
+          <td class="mat-cell text-center" [attr.colspan]="columns.length">{{ 'shared.data.empty' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="row-auto">
+      <mat-divider></mat-divider>
+      <mat-paginator [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="refresh($event)">
+      </mat-paginator>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
