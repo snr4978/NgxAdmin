@@ -45,10 +45,10 @@ export class RoleEditComponent {
       await this._httpService.put(`roles/${this.id}`, data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate('routes.basic.role.conflict'));
+            this._toastService.show(this._i18nService.translate(`routes.basic.role.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 410:
-            this._toastService.show(this._i18nService.translate('routes.basic.role.gone'));
+            this._toastService.show(this._i18nService.translate(`routes.basic.role.error.gone.${err.error?.propertyName?.toLowerCase()}`));
             this._dialogRef.close({ success: false });
             break;
           case 422:
@@ -63,7 +63,7 @@ export class RoleEditComponent {
       await this._httpService.post('roles', data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate('routes.basic.role.conflict'));
+            this._toastService.show(this._i18nService.translate(`routes.basic.role.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 422:
             this._toastService.show(this._i18nService.translate('shared.notification.fail'));

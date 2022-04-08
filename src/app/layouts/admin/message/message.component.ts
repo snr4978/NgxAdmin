@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -20,7 +19,6 @@ export class MessageComponent {
 
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _location: Location,
     private _formBuilder: FormBuilder,
     private _eventService: EventService,
     private _dialogService: DialogService,
@@ -48,6 +46,7 @@ export class MessageComponent {
         }
         else {
           await this._dialogService.alert(this._i18nService.translate('layouts.admin.message.exception'));
+          this._routerService.navigate('/message');
         }
       }
       if (this.view == null) {
@@ -66,7 +65,7 @@ export class MessageComponent {
     time: null,
     content: null,
     source: {
-      account: null,
+      name: null,
       avatar: null
     }
   };
@@ -116,8 +115,8 @@ export class MessageComponent {
       res = await this._httpService.get(`users/current/messages?${this.list.filter.query}offset=${this.list.pageSize * this.list.pageIndex}&limit=${this.list.pageSize}`);
       lastPage = res ? Math.max(0, Math.ceil(res.total / this.list.pageSize) - 1) : Number.MAX_VALUE;
     }
+    this.list.loading = false;
     if (res) {
-      this.list.loading = false;
       this.list.total = res.total;
       this.list.rows = res.items;
       this.list.selection.clear();
@@ -193,11 +192,10 @@ export class MessageComponent {
   }
 
   public read(id: number): void {
-    this.detail.back = true;
     this._routerService.navigate('/message', { id });
   }
 
-  public back(): void {
-    this._location.back();
+  public exit(): void {
+    this._routerService.navigate('/message');
   }
 }

@@ -51,10 +51,10 @@ export class UserEditComponent {
       await this._httpService.put(`users/${this.id}`, data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate(`routes.basic.user.conflict_${err.error}`));
+            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 410:
-            this._toastService.show(this._i18nService.translate('routes.basic.user.gone'));
+            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.gone.${err.error?.propertyName?.toLowerCase()}`));
             this._dialogRef.close({ success: false });
             break;
           case 422:
@@ -69,7 +69,7 @@ export class UserEditComponent {
       await this._httpService.post('users', data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate(`routes.basic.user.conflict_${err.error}`));
+            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 422:
             this._toastService.show(this._i18nService.translate('shared.notification.fail'));

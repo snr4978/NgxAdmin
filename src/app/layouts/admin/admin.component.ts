@@ -188,13 +188,10 @@ export class AdminComponent implements OnDestroy {
   private _messageHub: any;
   private async message(): Promise<void> {
     const refresh = async (): Promise<void> => {
-      const response = await this._httpService.join(
-        this._httpService.get('users/current/messages/count?flag=false'),
-        this._httpService.get('users/current/messages?flag=false&limit=5')
-      ).catch();
+      const response: any = await this._httpService.get('users/current/messages?flag=false&limit=5').catch();
       if (response) {
-        this.messages.count = response[0];
-        this.messages.list = response[1];
+        this.messages.count = response.total;
+        this.messages.list = response.items;
       }
     }
     refresh();

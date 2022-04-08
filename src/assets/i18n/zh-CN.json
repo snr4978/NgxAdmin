@@ -134,17 +134,29 @@
         "name": "角色名",
         "remark": "备注",
         "menu": "权限",
-        "conflict": "角色名已存在。",
-        "gone": "该角色已被删除。"
+        "error": {
+          "conflict": {
+            "name": "角色名已存在。"
+          },
+          "gone": {
+            "id": "该角色已被删除。"
+          }
+        }
       },
       "user": {
         "name": "用户名",
         "account": "账号",
         "role": "角色",
         "password": "重置密码",
-        "conflict_name": "用户名已存在。",
-        "conflict_account": "账号已存在。",
-        "gone": "该用户已被删除。"
+        "error": {
+          "conflict": {
+            "name": "用户名已存在。",
+            "account": "账号已存在。"
+          },
+          "gone": {
+            "id": "该用户已被删除。"
+          }
+        }
       }
     }
   }

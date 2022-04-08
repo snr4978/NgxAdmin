@@ -128,7 +128,7 @@ export class UserComponent {
       const res = this._httpService.delete(`users/${id}/password`).catch(async err => {
         switch (err.status) {
           case 410:
-            this._toastService.show(this._i18nService.translate('routes.basic.user.gone'));
+            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.gone.${err.error?.propertyName?.toLowerCase()}`));
             this.refresh();
             break;
           case 422:

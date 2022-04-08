@@ -1,9 +1,7 @@
 <div class="grid" *ngIf="view=='detail'">
   <div class="row-auto">
     <mat-toolbar class="app-background-card">
-      <button mat-icon-button *ngIf="!list.loading"
-        matTooltip="{{ 'shared.operation.back' | translate }}"
-        (click)="back()">
+      <button mat-icon-button matTooltip="{{ 'shared.operation.back' | translate }}" (click)="exit()">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <h2 class="spacer header">{{detail.subject}}</h2>
@@ -16,10 +14,11 @@
         <mat-icon>delete</mat-icon>
       </button>
     </mat-toolbar>
+    <mat-divider></mat-divider>
     <div class="source">
       <img [src]="detail.source.avatar">
       <div>
-        <p>{{detail.source.account}}</p>
+        <p>{{detail.source.name}}</p>
         <p class="app-foreground-secondary">{{detail.time | date:'yyyy-MM-dd HH:mm'}}</p>
       </div>
     </div>
@@ -121,12 +120,13 @@
         </ng-container>
         <ng-container matColumnDef="source">
           <th mat-header-cell *matHeaderCellDef>{{ 'layouts.admin.message.source' | translate }}</th>
-          <td mat-cell *matCellDef="let row"> {{ row.source.account }} </td>
+          <td mat-cell *matCellDef="let row"> {{ row.source.name }} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="list.columns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: list.columns;"></tr>
         <tr class="mat-row" [hidden]="list.loading" *matNoDataRow>
-          <td class="mat-cell text-center" [attr.colspan]="list.columns.length">{{ 'shared.data.empty' | translate }}</td>
+          <td class="mat-cell text-center" [attr.colspan]="list.columns.length">{{ 'shared.data.empty' | translate }}
+          </td>
         </tr>
       </table>
     </div>

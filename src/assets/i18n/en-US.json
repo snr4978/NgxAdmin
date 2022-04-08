@@ -134,17 +134,29 @@
         "name": "Name",
         "remark": "Remark",
         "menu": "Permission",
-        "conflict": "The name is already exists.",
-        "gone": "The role is already deleted."
+        "error": {
+          "conflict": {
+            "name": "The name is already exists."
+          },
+          "gone": {
+            "id": "The role is already deleted."
+          }
+        }
       },
       "user": {
         "name": "Name",
         "account": "Account",
         "role": "Role",
         "password": "Reset password",
-        "conflict_name": "The name is already exists.",
-        "conflict_account": "The account is already exists.",
-        "gone": "The user is already deleted."
+        "error": {
+          "conflict": {
+            "name": "The name is already exists.",
+            "account": "The account is already exists."
+          },
+          "gone": {
+            "id": "The user is already deleted."
+          }
+        }
       }
     }
   }

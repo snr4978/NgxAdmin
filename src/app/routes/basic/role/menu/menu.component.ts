@@ -112,7 +112,7 @@ export class RoleMenuComponent {
     const res = this._httpService.post(`roles/${this._id}/menu`, this.selection.selected).catch(async err => {
       switch (err.status) {
         case 410:
-          this._toastService.show(this._i18nService.translate('routes.basic.role.gone'));
+          this._toastService.show(this._i18nService.translate(`routes.basic.role.error.gone.${err.error?.propertyName?.toLowerCase()}`));
           this._dialogRef.close({ success: false });
           break;
         case 422:

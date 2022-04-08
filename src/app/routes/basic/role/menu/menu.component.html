@@ -5,12 +5,12 @@
   </div>
   <ng-template #$tree>
     <mat-tree [dataSource]="tree" [treeControl]="ctrl">
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="25">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="24">
         <button mat-icon-button disabled></button>
         <mat-checkbox [checked]="selection.isSelected(node.id)" (change)="toggle(node)">{{ node.name | translate }}
         </mat-checkbox>
       </mat-tree-node>
-      <mat-tree-node *matTreeNodeDef="let node; when: internal" matTreeNodePadding matTreeNodePaddingIndent="25">
+      <mat-tree-node *matTreeNodeDef="let node; when: internal" matTreeNodePadding matTreeNodePaddingIndent="24">
         <button mat-icon-button matTreeNodeToggle>
           <mat-icon class="mat-icon-rtl-mirror">
             {{ctrl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
