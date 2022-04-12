@@ -40,6 +40,10 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "sourceMap": {
+                "scripts": true,
+                "hidden": true
+              },
               "optimization": true,
               "outputHashing": "all",
               "namedChunks": false,
