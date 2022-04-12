@@ -125,7 +125,7 @@
         <tr mat-header-row *matHeaderRowDef="list.columns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: list.columns;"></tr>
         <tr class="mat-row" [hidden]="list.loading" *matNoDataRow>
-          <td class="mat-cell text-center" [attr.colspan]="list.columns.length">{{ 'shared.data.empty' | translate }}
+          <td class="mat-cell no-data" [attr.colspan]="list.columns.length">{{ 'shared.data.empty' | translate }}
           </td>
         </tr>
       </table>
