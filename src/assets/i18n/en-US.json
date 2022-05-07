@@ -14,7 +14,8 @@
       "conflict": "You have been disconnected as someone has signed in with your ID in elsewhere.",
       "confirm": "Are you sure you want to continue?",
       "success": "The operation completed successfully.",
-      "fail": "The operation failed."
+      "fail": "The operation failed.",
+      "unknown": "Unknown Exception."
     },
     "operation": {
       "add": "Add",
@@ -25,7 +26,8 @@
       "reset": "Reset",
       "reload": "Reload",
       "forward": "Forward",
-      "back": "Back"
+      "back": "Back",
+      "cancel": "Cancel"
     },
     "dialog": {
       "title": "Infomation",
@@ -120,17 +122,14 @@
         "unread": "Unread",
         "markas": "Mark as ",
         "receive": "Receive"
-      },
-      "menu": {
-        "basic": "Infomation",
-        "role": "Roles",
-        "user": "Users"
       }
     }
   },
   "routes": {
     "basic": {
+      "title": "System",
       "role": {
+        "title": "Role",
         "name": "Name",
         "remark": "Remark",
         "menu": "Permission",
@@ -144,6 +143,7 @@
         }
       },
       "user": {
+        "title": "User",
         "name": "Name",
         "account": "Account",
         "role": "Role",
