@@ -29,7 +29,7 @@
 </div>
 
 <mat-sidenav-container hasBackdrop="true" *ngIf="view=='list'">
-  <mat-sidenav #$filter mode="over" position="end">
+  <mat-sidenav #$filter mode="over" position="end" autoFocus="false">
     <form autocomplete="off" [formGroup]="list.filter.form">
       <mat-form-field>
         <mat-label>{{ 'layouts.admin.message.subject' | translate }}</mat-label>

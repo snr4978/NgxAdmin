@@ -93,6 +93,7 @@ export class UserComponent {
       }
     }
     this.filter.query = query;
+    this.pageIndex = 0;
     this.refresh();
   }
 
@@ -101,6 +102,7 @@ export class UserComponent {
       this.filter.form.controls[key].reset('');
     }
     this.filter.query = '';
+    this.pageIndex = 0;
     this.refresh();
   }
 

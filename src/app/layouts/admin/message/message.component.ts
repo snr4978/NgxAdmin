@@ -137,6 +137,7 @@ export class MessageComponent {
       }
     }
     this.list.filter.query = query;
+    this.list.pageIndex = 0;
     this.refresh();
     this._eventService.emit('openMessage');
   }
@@ -146,6 +147,7 @@ export class MessageComponent {
       this.list.filter.form.controls[key].reset('');
     }
     this.list.filter.query = '';
+    this.list.pageIndex = 0;
     this.refresh();
   }
 

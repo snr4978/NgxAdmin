@@ -90,6 +90,7 @@ export class RoleComponent {
       }
     }
     this.filter.query = query;
+    this.pageIndex = 0;
     this.refresh();
   }
 
@@ -98,6 +99,7 @@ export class RoleComponent {
       this.filter.form.controls[key].reset('');
     }
     this.filter.query = '';
+    this.pageIndex = 0;
     this.refresh();
   }
 
