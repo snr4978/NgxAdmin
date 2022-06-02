@@ -18,6 +18,14 @@ export class DialogPromptComponent {
     return this._data.content;
   }
 
+  public get type(): string {
+    return this._data.type || 'text';
+  }
+
+  public get required(): boolean {
+    return this._data.required;
+  }
+
   public get dataSource(): PromptDataSource {
     return this._data.dataSource;
   }

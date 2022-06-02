@@ -50,14 +50,20 @@ export class DialogService {
     }).catch(() => { });
   }
 
-  public prompt(content: string, value?: string, dataSource?: PromptDataSource): Promise<Object> {
+  public prompt(content: string, value?: string, options?: {
+    type?: 'text' | 'select' | 'number' | 'password',
+    required?: boolean,
+    dataSource?: PromptDataSource
+  }): Promise<Object> {
     return new Promise((resolve, reject) => {
       const subscription: Subscription = this._dialog.open(DialogPromptComponent, {
         width: '600px',
         data: {
           content: content,
           value: value,
-          dataSource: dataSource
+          type: options?.type,
+          required: options?.required,
+          dataSource: options?.dataSource
         }
       }).afterClosed().subscribe(result => {
         subscription.unsubscribe();

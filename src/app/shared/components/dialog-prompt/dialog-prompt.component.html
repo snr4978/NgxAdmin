@@ -2,15 +2,15 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label [innerHTML]="text"></mat-label>
-    <mat-select *ngIf="dataSource;else $textbox" [(ngModel)]="value">
+    <mat-select *ngIf="type=='select';else $input" [(ngModel)]="value" [required]="required">
       <mat-option *ngFor="let item of dataSource.data" [value]="item[dataSource.selectedValuePath]">{{item[dataSource.displayMemberPath]}}</mat-option>
     </mat-select>
-    <ng-template #$textbox>
-      <input matInput [(ngModel)]="value">
+    <ng-template #$input>
+      <input matInput [type]="type" [(ngModel)]="value" [required]="required">
     </ng-template>
   </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="primary" [mat-dialog-close]="{ submit : true, data : value }">{{ 'shared.dialog.ok' | translate | uppercase }}</button>
+  <button mat-button color="primary" [disabled]="required&&!value" [mat-dialog-close]="{ submit : true, data : value }">{{ 'shared.dialog.ok' | translate | uppercase }}</button>
   <button mat-button mat-dialog-close>{{ 'shared.dialog.cancel' | translate | uppercase }}</button>
 </div>
