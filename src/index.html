@@ -1,13 +1,152 @@
 <!doctype html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title></title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    #preload {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -50px 0 0 -50px;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+    }
+
+    #preload svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      transform: rotate(-90deg);
+      transform-origin: center;
+      animation: svg-rotate 2000ms linear infinite;
+    }
+
+    #preload circle {
+      fill: transparent;
+      stroke-dasharray: 282.743px;
+      stroke-width: 10%;
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 225ms linear;
+      transition-property: stroke;
+      animation-name: circle-rotate;
+      animation-duration: 4000ms;
+      animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes svg-rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes circle-rotate {
+      0% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotate(0);
+      }
+      12.5% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotate(0);
+      }
+      12.5001% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotateX(180deg) rotate(72.5deg);
+      }
+      25% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotateX(180deg) rotate(72.5deg);
+      }
+      25.0001% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotate(270deg);
+      }
+      37.5% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotate(270deg);
+      }
+      37.5001% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotateX(180deg) rotate(161.5deg);
+      }
+      50% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotateX(180deg) rotate(161.5deg);
+      }
+      50.0001% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotate(180deg);
+      }
+      62.5% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotate(180deg);
+      }
+      62.5001% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotateX(180deg) rotate(251.5deg);
+      }
+      75% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotateX(180deg) rotate(251.5deg);
+      }
+      75.0001% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotate(90deg);
+      }
+      87.5% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotate(90deg);
+      }
+      87.5001% {
+        stroke-dashoffset: 56.5486677px;
+        transform: rotateX(180deg) rotate(341.5deg);
+      }
+      100% {
+        stroke-dashoffset: 268.606171575px;
+        transform: rotateX(180deg) rotate(341.5deg);
+      }
+    }
+  </style>
 </head>
+
 <body class="mat-typography">
   <app-root></app-root>
+  <div id="preload" role="progressbar">
+    <svg focusable="false" aria-hidden="true">
+      <circle id="circle" cx="50%" cy="50%" r="45"></circle>
+    </svg>
+  </div>
+  <script>
+    switch (localStorage.getItem('theme')) {
+      default:
+      case 'default':
+      case 'colorful':
+        document.body.style.backgroundColor = '#fafafa';
+        document.getElementById('circle').style.stroke = '#2196f3';
+        break;
+      case 'light':
+        document.body.style.backgroundColor = '#fafafa';
+        document.getElementById('circle').style.stroke = '#3f51b5';
+        break;
+      case 'dark':
+        document.body.style.backgroundColor = '#303030';
+        document.getElementById('circle').style.stroke = '#90caf9';
+        break;
+    }
+  </script>
 </body>
+
 </html>
