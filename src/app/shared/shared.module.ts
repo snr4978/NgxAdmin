@@ -10,6 +10,8 @@ import { MaterialModule } from './modules/material';
 import { DialogAlertComponent } from './components/dialog-alert/dialog-alert.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { DialogPromptComponent } from './components/dialog-prompt/dialog-prompt.component';
+import { TableColumnPatternComponent } from './components/table-column-pattern/table-column-pattern.component';
+import { TableRowSelectionComponent } from './components/table-row-selection/table-row-selection.component';
 import { CleaveDirective } from './directives/cleave.directive';
 import { FocusDirective } from './directives/focus.directive';
 import { KeyboardlessDirective } from './directives/keyboardless.directive';
@@ -30,7 +32,9 @@ const MODULES = [
 const COMPONENTS = [
   DialogAlertComponent,
   DialogConfirmComponent,
-  DialogPromptComponent
+  DialogPromptComponent,
+  TableColumnPatternComponent,
+  TableRowSelectionComponent
 ];
 const DIRECTIVES = [
   CleaveDirective,

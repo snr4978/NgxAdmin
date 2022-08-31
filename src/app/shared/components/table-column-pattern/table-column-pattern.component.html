@@ -1,0 +1,6 @@
+<div cdkDropList [cdkDropListSortPredicate]="sticky" (cdkDropListDropped)="drop($event)">
+  <button mat-menu-item cdkDrag *ngFor="let item of columns" [cdkDragDisabled]="item.sticky">
+    <mat-icon class="app-foreground-secondary">more_vert</mat-icon>
+    <mat-checkbox [(ngModel)]="item.display" (click)="$event.stopPropagation()">{{ item.header | translate }}</mat-checkbox>
+  </button>
+</div>

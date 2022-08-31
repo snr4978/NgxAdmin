@@ -1,0 +1,6 @@
+<ng-container [ngSwitch]="type">
+  <mat-checkbox *ngSwitchCase="'header'" (change)="select($event)"
+    [checked]="checked && model.selected.length == data.length"
+    [indeterminate]="checked && model.selected.length != data.length"></mat-checkbox>
+  <mat-checkbox *ngSwitchCase="'row'" (change)="select($event)" [checked]="checked"></mat-checkbox>
+</ng-container>

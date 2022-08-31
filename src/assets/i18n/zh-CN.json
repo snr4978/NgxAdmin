@@ -27,7 +27,8 @@
       "reload": "重新加载",
       "forward": "前进",
       "back": "后退",
-      "cancel": "取消"
+      "cancel": "取消",
+      "personalize": "个性化"
     },
     "dialog": {
       "title": "消息",

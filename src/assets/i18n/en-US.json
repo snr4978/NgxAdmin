@@ -27,7 +27,8 @@
       "reload": "Reload",
       "forward": "Forward",
       "back": "Back",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "personalize": "Personalize"
     },
     "dialog": {
       "title": "Infomation",

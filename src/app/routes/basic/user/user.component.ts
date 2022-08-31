@@ -5,6 +5,7 @@ import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
 import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
+import { TableColumnDefinition } from '@app/shared/components/table-column-pattern/table-column-pattern.component';
 import { UserEditComponent } from './edit/edit.component';
 
 @Component({
@@ -26,7 +27,13 @@ export class UserComponent {
   }
 
   public loading: boolean = true;
-  public columns: string[] = ['select', 'name', 'account', 'role', 'id'];
+  public columns = new TableColumnDefinition<any>([
+    { id: 'selection', sticky: 'start' },
+    { id: 'name', header: 'routes.basic.user.name' },
+    { id: 'account', header: 'routes.basic.user.account' },
+    { id: 'role', header: 'routes.basic.user.role' },
+    { id: 'operation', sticky: 'end' }
+  ]);
   public rows: any[];
   public total: number = 0;
   public selection = new SelectionModel<any>(true, []);
@@ -45,17 +52,6 @@ export class UserComponent {
       })
     };
   public roles: any[];
-
-  public select(e?: any): void {
-    if (e) {
-      if (this.selection.selected.length == this.rows.length) {
-        this.selection.clear();
-      }
-      else {
-        this.rows.forEach(i => this.selection.select(i));
-      }
-    }
-  }
 
   public async refresh(e?: any): Promise<void> {
     if (e) {

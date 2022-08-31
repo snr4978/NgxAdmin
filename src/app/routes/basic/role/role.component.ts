@@ -5,6 +5,7 @@ import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
 import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
+import { TableColumnDefinition } from '@app/shared/components/table-column-pattern/table-column-pattern.component';
 import { RoleEditComponent } from './edit/edit.component';
 import { RoleMenuComponent } from './menu/menu.component';
 
@@ -26,7 +27,12 @@ export class RoleComponent {
   }
 
   public loading: boolean = true;
-  public columns: string[] = ['select', 'name', 'remark', 'id'];
+  public columns = new TableColumnDefinition<any>([
+    { id: 'selection', sticky: 'start' },
+    { id: 'name', header: 'routes.basic.role.name' },
+    { id: 'remark', header: 'routes.basic.role.remark' },
+    { id: 'operation', sticky: 'end' }
+  ]);
   public rows: any[];
   public total: number = 0;
   public selection = new SelectionModel<any>(true, []);
@@ -42,17 +48,6 @@ export class RoleComponent {
         name: ''
       })
     };
-
-  public select(e?: any): void {
-    if (e) {
-      if (this.selection.selected.length == this.rows.length) {
-        this.selection.clear();
-      }
-      else {
-        this.rows.forEach(i => this.selection.select(i));
-      }
-    }
-  }
 
   public async refresh(e?: any): Promise<void> {
     if (e) {

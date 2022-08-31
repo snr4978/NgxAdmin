@@ -14,8 +14,7 @@
   <mat-sidenav-content [loading]="loading">
     <div class="row-auto">
       <mat-toolbar *ngIf="selection.hasValue();else $toolbar" class="app-background-primary-alpha">
-        <span
-          class="spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : selection.selected.length } }}</span>
+        <span class="spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : selection.selected.length } }}</span>
         <button mat-icon-button matTooltip="{{ 'shared.operation.deletes' | translate }}" (click)="delete()">
           <mat-icon>delete</mat-icon>
         </button>
@@ -27,6 +26,12 @@
           <button mat-button color="primary"
             (click)="refresh()">{{ 'shared.operation.reload' | translate | uppercase }}</button>
           <span class="spacer"></span>
+          <button mat-icon-button matTooltip="{{ 'shared.operation.personalize' | translate }}" [matMenuTriggerFor]="$columns">
+            <mat-icon>flip</mat-icon>
+            <mat-menu #$columns>
+              <table-column-pattern [columns]="columns"></table-column-pattern>
+            </mat-menu>
+          </button>
           <button mat-icon-button matTooltip="{{ 'shared.operation.filter' | translate }}" (click)="$filter.toggle()">
             <mat-icon>filter_list</mat-icon>
           </button>
@@ -36,38 +41,35 @@
     </div>
     <div class="row-fill">
       <table mat-table [dataSource]="rows" matSort (matSortChange)="refresh($event)">
-        <ng-container matColumnDef="select" sticky>
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="select($event)"
-              [checked]="selection.hasValue()&&selection.selected.length==rows.length"
-              [indeterminate]="selection.hasValue()&&selection.selected.length!=rows.length"></mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-          </td>
+        <ng-container [matColumnDef]="item.id" [ngSwitch]="item.id" *ngFor="let item of columns"
+          [sticky]="item.sticky=='start'" [stickyEnd]="item.sticky=='end'">
+          <ng-container *ngSwitchCase="'selection'">
+            <th mat-header-cell *matHeaderCellDef>
+              <table-row-selection [model]="selection" [data]="rows"></table-row-selection>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <table-row-selection [model]="selection" [data]="row"></table-row-selection>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'operation'">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="{{ 'routes.basic.role.menu' | translate }}" (click)="menu(row.id)">
+                <mat-icon>menu</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="item.sortable===false">
+              {{ item.header | translate }}</th>
+            <td mat-cell *matCellDef="let row">{{row[item.id]}}</td>
+          </ng-container>
         </ng-container>
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'routes.basic.role.name' | translate}}</th>
-          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-        </ng-container>
-        <ng-container matColumnDef="remark">
-          <th mat-header-cell *matHeaderCellDef>{{'routes.basic.role.remark' | translate}}</th>
-          <td mat-cell *matCellDef="let row"> {{row.remark}} </td>
-        </ng-container>
-        <ng-container matColumnDef="id" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="{{ 'routes.basic.role.menu' | translate }}" (click)="menu(row.id)">
-              <mat-icon>menu</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="columns.display; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns.display;"></tr>
         <tr class="mat-row" [hidden]="loading" *matNoDataRow>
           <td class="mat-cell no-data" [attr.colspan]="columns.length">{{'shared.data.empty' | translate}}</td>
         </tr>
