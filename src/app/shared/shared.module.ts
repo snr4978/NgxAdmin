@@ -16,6 +16,7 @@ import { KeyboardlessDirective } from './directives/keyboardless.directive';
 import { LoadingDirective } from './directives/loading.directive';
 import { UploadDirective } from './directives/upload.directive';
 import { FieldPipe } from './pipes/field.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
 import { FindPipe } from './pipes/find.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 import { UrlPipe } from './pipes/url.pipe';
@@ -40,6 +41,7 @@ const DIRECTIVES = [
 ];
 const PIPES = [
   FieldPipe,
+  FilterPipe,
   FindPipe,
   JoinPipe,
   UrlPipe

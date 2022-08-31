@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PromptDataSource } from '@app/core/services/dialog.service';
 
 @Component({
-  selector: 'app-dialog-prompt',
+  selector: 'dialog-prompt',
   templateUrl: './dialog-prompt.component.html',
   styleUrls: ['./dialog-prompt.component.scss']
 })

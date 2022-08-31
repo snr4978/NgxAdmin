@@ -8,7 +8,7 @@ export class UrlPipe implements PipeTransform {
 
   constructor(private _sanitizer: DomSanitizer) { }
 
-  transform(object: string): SafeUrl {
+  transform(object: Blob | MediaSource): SafeUrl {
     return object && this._sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(object));
   }
 
