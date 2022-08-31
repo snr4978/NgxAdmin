@@ -12,11 +12,13 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
 import { DialogPromptComponent } from './components/dialog-prompt/dialog-prompt.component';
 import { TableColumnPatternComponent } from './components/table-column-pattern/table-column-pattern.component';
 import { TableRowSelectionComponent } from './components/table-row-selection/table-row-selection.component';
+import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { CleaveDirective } from './directives/cleave.directive';
 import { FocusDirective } from './directives/focus.directive';
 import { KeyboardlessDirective } from './directives/keyboardless.directive';
 import { LoadingDirective } from './directives/loading.directive';
 import { UploadDirective } from './directives/upload.directive';
+import { TooltipDirective } from './directives/tooltip.directive';
 import { FieldPipe } from './pipes/field.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { FindPipe } from './pipes/find.pipe';
@@ -34,14 +36,16 @@ const COMPONENTS = [
   DialogConfirmComponent,
   DialogPromptComponent,
   TableColumnPatternComponent,
-  TableRowSelectionComponent
+  TableRowSelectionComponent,
+  TooltipComponent
 ];
 const DIRECTIVES = [
   CleaveDirective,
   FocusDirective,
   KeyboardlessDirective,
   LoadingDirective,
-  UploadDirective
+  UploadDirective,
+  TooltipDirective
 ];
 const PIPES = [
   FieldPipe,
