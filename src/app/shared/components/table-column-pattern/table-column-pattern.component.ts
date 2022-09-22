@@ -19,7 +19,7 @@ export class TableColumnPatternComponent {
     return this._columns;
   }
 
-  public sticky = (index: number): boolean => !this._columns[index].sticky;
+  public sticky = (index: number): boolean => !this._columns[index].sticky && this._columns[index].header;
 
   public drop(e: CdkDragDrop<any[]>): void {
     moveItemInArray(this._columns, e.previousIndex, e.currentIndex);

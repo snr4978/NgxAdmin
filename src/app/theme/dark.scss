@@ -36,24 +36,24 @@ $theme-dark:mat-dark-theme($theme-dark-primary, $theme-dark-accent, $theme-dark-
     background-color: mat-color($theme-dark-primary) !important;
   }
 
-  .app-background-primary-alpha {
-    background-color: rgba($color: mat-color($theme-dark-primary), $alpha: .12) !important;
+  .app-background-primary-lighter {
+    background-color: mix(mat-color($theme-dark-primary), mat-color(map-get($theme-dark, background), card), 12%);
   }
 
   .app-background-accent {
     background-color: mat-color($theme-dark-accent) !important;
   }
 
-  .app-background-accent-alpha {
-    background-color: rgba($color: mat-color($theme-dark-accent), $alpha: .12) !important;
+  .app-background-accent-lighter {
+    background-color: mix(mat-color($theme-dark-accent), mat-color(map-get($theme-dark, background), card), 12%);
   }
 
   .app-background-warn {
     background-color: mat-color($theme-dark-warn) !important;
   }
 
-  .app-background-warn-alpha {
-    background-color: rgba($color: mat-color($theme-dark-warn), $alpha: .12) !important;
+  .app-background-warn-lighter {
+    background-color: mix(mat-color($theme-dark-warn), mat-color(map-get($theme-dark, background), card), 12%);
   }
 
   .app-foreground {

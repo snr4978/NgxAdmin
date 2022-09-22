@@ -32,7 +32,7 @@
                     [ngClass]="{'focus': item.focus, 'active': item.active}">
                   <ng-container *ngIf="item.children; then $group else $item"></ng-container>
                   <ng-template #$group>
-                    <a matRipple [style.paddingLeft]="item.level>0&&55+10*(item.level-1)+'px'"
+                    <a matRipple [style.paddingLeft]="item.level>0&&55+16*(item.level-1)+'px'"
                        href="javascript:void(0);" (click)="menu.toggle(item)">
                       <mat-icon class="app-menu-icon" *ngIf="item.level==0">{{ item.icon }}</mat-icon>
                       <span class="app-menu-name">{{ item.header | translate }}</span>
@@ -41,7 +41,7 @@
                     </a>
                   </ng-template>
                   <ng-template #$item>
-                    <a matRipple [style.paddingLeft]="item.level>0&&55+10*(item.level-1)+'px'"
+                    <a matRipple [style.paddingLeft]="item.level>0&&55+16*(item.level-1)+'px'"
                        [routerLink]="[ item.url ]" (click)="layout.media=='mobile'&&$sidenav.toggle()">
                       <mat-icon class="app-menu-icon" *ngIf="item.level==0">{{ item.icon }}</mat-icon>
                       <span class="app-menu-name">{{ item.header | translate }}</span>

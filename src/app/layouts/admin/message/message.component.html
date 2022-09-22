@@ -64,7 +64,7 @@
   </mat-sidenav>
   <mat-sidenav-content class="grid" [loading]="list.loading">
     <div class="row-auto">
-      <mat-toolbar *ngIf="list.selection.hasValue();else $toolbar" class="app-background-primary-alpha">
+      <mat-toolbar *ngIf="list.selection.hasValue();else $toolbar" class="app-background-primary-lighter">
         <span
           class="spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : list.selection.selected.length } }}</span>
         <button mat-icon-button

@@ -1,8 +1,8 @@
-$theme-colorful-primary:mat-palette($mat-blue);
-$theme-colorful-accent:mat-palette($mat-amber, 300, 200, 400);
-$theme-colorful-warn:mat-palette($mat-red);
+$theme-colorful-primary: mat-palette($mat-blue);
+$theme-colorful-accent: mat-palette($mat-amber, 300, 200, 400);
+$theme-colorful-warn: mat-palette($mat-red);
 
-$theme-colorful:mat-light-theme($theme-colorful-primary, $theme-colorful-accent, $theme-colorful-warn);
+$theme-colorful: mat-light-theme($theme-colorful-primary, $theme-colorful-accent, $theme-colorful-warn);
 
 .theme-colorful {
   @include angular-material-theme($theme-colorful);
@@ -36,24 +36,24 @@ $theme-colorful:mat-light-theme($theme-colorful-primary, $theme-colorful-accent,
     background-color: mat-color($theme-colorful-primary) !important;
   }
 
-  .app-background-primary-alpha {
-    background-color: rgba($color: mat-color($theme-colorful-primary), $alpha: .12) !important;
+  .app-background-primary-lighter {
+    background-color: mix(mat-color($theme-colorful-primary), mat-color(map-get($theme-colorful, background), card), 12%);
   }
 
   .app-background-accent {
     background-color: mat-color($theme-colorful-accent) !important;
   }
 
-  .app-background-accent-alpha {
-    background-color: rgba($color: mat-color($theme-colorful-accent), $alpha: .12) !important;
+  .app-background-accent-lighter {
+    background-color: mix(mat-color($theme-colorful-accent), mat-color(map-get($theme-colorful, background), card), 12%);
   }
 
   .app-background-warn {
     background-color: mat-color($theme-colorful-warn) !important;
   }
 
-  .app-background-warn-alpha {
-    background-color: rgba($color: mat-color($theme-colorful-warn), $alpha: .12) !important;
+  .app-background-warn-lighter {
+    background-color: mix(mat-color($theme-colorful-warn), mat-color(map-get($theme-colorful, background), card), 12%);
   }
 
   .app-foreground {
