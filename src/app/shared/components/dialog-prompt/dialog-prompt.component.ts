@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PromptDataSource } from '@app/core/services/dialog.service';
 
 @Component({
   selector: 'dialog-prompt',
@@ -26,8 +25,8 @@ export class DialogPromptComponent {
     return this._data.required;
   }
 
-  public get dataSource(): PromptDataSource {
-    return this._data.dataSource;
+  public get range(): number[] | {} {
+    return this._data.range;
   }
 
   public get value(): string {

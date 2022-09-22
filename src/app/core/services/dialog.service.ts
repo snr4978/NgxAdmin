@@ -6,12 +6,6 @@ import { DialogAlertComponent } from '@app/shared/components/dialog-alert/dialog
 import { DialogConfirmComponent } from '@app/shared/components/dialog-confirm/dialog-confirm.component';
 import { DialogPromptComponent } from '@app/shared/components/dialog-prompt/dialog-prompt.component';
 
-export interface PromptDataSource {
-  data: any[];
-  displayMemberPath: string;
-  selectedValuePath: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,8 +46,8 @@ export class DialogService {
 
   public prompt(content: string, value?: string, options?: {
     type?: 'text' | 'select' | 'number' | 'password',
-    required?: boolean,
-    dataSource?: PromptDataSource
+    range?: number[] | {},
+    required?: boolean
   }): Promise<Object> {
     return new Promise((resolve, reject) => {
       const subscription: Subscription = this._dialog.open(DialogPromptComponent, {
@@ -62,8 +56,8 @@ export class DialogService {
           content: content,
           value: value,
           type: options?.type,
-          required: options?.required,
-          dataSource: options?.dataSource
+          range: options?.range,
+          required: options?.required
         }
       }).afterClosed().subscribe(result => {
         subscription.unsubscribe();

@@ -1,13 +1,12 @@
-<h2 mat-dialog-title>{{ 'shared.dialog.title' | translate }}</h2>
+<h2 mat-dialog-title>{{ 'shared.dialog.edit' | translate }}</h2>
 <div mat-dialog-content>
-  <mat-form-field>
+  <mat-form-field [ngSwitch]="type">
     <mat-label [innerHTML]="text"></mat-label>
-    <mat-select *ngIf="type=='select';else $input" [(ngModel)]="value" [required]="required">
-      <mat-option *ngFor="let item of dataSource.data" [value]="item[dataSource.selectedValuePath]">{{item[dataSource.displayMemberPath]}}</mat-option>
+    <mat-select *ngSwitchCase="'select'" [(ngModel)]="value" [required]="required">
+      <mat-option *ngFor="let item of range | keyvalue" [value]="item.key">{{ item.value }}</mat-option>
     </mat-select>
-    <ng-template #$input>
-      <input matInput [type]="type" [(ngModel)]="value" [required]="required">
-    </ng-template>
+    <input *ngSwitchCase="'number'" matInput type="number" [min]="range && range[0]" [max]="range && range[1]" [(ngModel)]="value" [required]="required">
+    <input *ngSwitchDefault matInput [type]="type" [(ngModel)]="value" [minlength]="range && range[0]" [maxlength]="range && range[1]" [required]="required">
   </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">

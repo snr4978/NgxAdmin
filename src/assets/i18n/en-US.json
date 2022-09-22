@@ -32,6 +32,7 @@
     },
     "dialog": {
       "title": "Infomation",
+      "edit": "Edit",
       "ok": "Ok",
       "cancel": "Cancel",
       "yes": "Yes",
