@@ -4,8 +4,13 @@
   justify-content: center;
 }
 
-.mat-tree-node {
-  min-height: unset;
+.mat-nested-tree-node-children {
+  padding-left: 24px;
+  overflow: hidden;
+}
+
+.mat-dialog-content {
+  padding: 0 16px;
 }
 
 .mat-dialog-actions {

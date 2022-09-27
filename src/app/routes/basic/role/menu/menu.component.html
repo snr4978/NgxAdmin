@@ -1,24 +1,25 @@
 <h2 mat-dialog-title>{{ 'routes.basic.role.menu' | translate}}</h2>
 <div mat-dialog-content>
-  <div class="loading" *ngIf="loading;else $tree">
+  <div class="loading" *ngIf="loading; else $tree">
     <mat-spinner></mat-spinner>
   </div>
   <ng-template #$tree>
     <mat-tree [dataSource]="tree" [treeControl]="ctrl">
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="24">
+      <mat-tree-node *matTreeNodeDef="let node">
         <button mat-icon-button disabled></button>
-        <mat-checkbox [checked]="selection.isSelected(node.id)" (change)="toggle(node)">{{ node.name | translate }}
-        </mat-checkbox>
+        <mat-checkbox [checked]="selection.isSelected(node.data.id)" (change)="toggle(node)">{{ node.data.header | translate }}</mat-checkbox>
       </mat-tree-node>
-      <mat-tree-node *matTreeNodeDef="let node; when: internal" matTreeNodePadding matTreeNodePaddingIndent="24">
-        <button mat-icon-button matTreeNodeToggle>
-          <mat-icon class="mat-icon-rtl-mirror">
-            {{ctrl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-          </mat-icon>
-        </button>
-        <mat-checkbox [checked]="selected(node,false)" [indeterminate]="selected(node,true)" (change)="toggle(node)">
-          {{ node.name | translate }}</mat-checkbox>
-      </mat-tree-node>
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: expandable">
+        <div>
+          <button mat-icon-button matTreeNodeToggle>
+            <mat-icon>{{ ctrl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+          </button>
+          <mat-checkbox [checked]="selected(node, false)" [indeterminate]="selected(node, true)" (change)="toggle(node)">{{ node.data.header | translate }}</mat-checkbox>
+        </div>
+        <div class="mat-nested-tree-node-children" [@expand]="ctrl.isExpanded(node) ? 'expanded' : 'collapsed'">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </div>
+      </mat-nested-tree-node>
     </mat-tree>
   </ng-template>
 </div>
