@@ -128,7 +128,7 @@
     }
   },
   "routes": {
-    "basic": {
+    "admin": {
       "title": "系统",
       "role": {
         "title": "角色管理",

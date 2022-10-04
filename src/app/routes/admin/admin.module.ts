@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
 
-import { BasicRoutingModule } from './basic-routing.module';
+import { AdminRoutingModule } from './admin-routing.module';
 
 import { RoleComponent } from './role/role.component';
 import { RoleEditComponent } from './role/edit/edit.component';
@@ -20,7 +20,7 @@ import { UserEditComponent } from './user/edit/edit.component';
   ],
   imports: [
     SharedModule,
-    BasicRoutingModule
+    AdminRoutingModule
   ]
 })
-export class BasicModule { }
+export class AdminModule { }

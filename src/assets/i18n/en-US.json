@@ -128,7 +128,7 @@
     }
   },
   "routes": {
-    "basic": {
+    "admin": {
       "title": "System",
       "role": {
         "title": "Role",

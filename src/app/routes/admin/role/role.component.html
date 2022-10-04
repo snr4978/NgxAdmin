@@ -2,7 +2,7 @@
   <mat-sidenav #$filter mode="over" position="end" autoFocus="false">
     <form autocomplete="off" [formGroup]="filter.form">
       <mat-form-field>
-        <mat-label>{{ 'routes.basic.role.name' | translate }}</mat-label>
+        <mat-label>{{ 'routes.admin.role.name' | translate }}</mat-label>
         <input matInput formControlName="name">
       </mat-form-field>
     </form>
@@ -57,7 +57,7 @@
               <button mat-icon-button matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button matTooltip="{{ 'routes.basic.role.menu' | translate }}" (click)="menu(row.id)">
+              <button mat-icon-button matTooltip="{{ 'routes.admin.role.menu' | translate }}" (click)="menu(row.id)">
                 <mat-icon>menu</mat-icon>
               </button>
             </td>

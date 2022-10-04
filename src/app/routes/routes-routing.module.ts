@@ -24,8 +24,8 @@ const routes: Routes = [
         }
       },
       {
-        path: 'basic',
-        loadChildren: () => import('./basic/basic.module').then(m => m.BasicModule)
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
       }
     ]
   },

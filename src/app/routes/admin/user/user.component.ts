@@ -6,15 +6,14 @@ import { HttpService } from '@app/core/services/http.service';
 import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
 import { TableColumnDefinition } from '@app/shared/components/table-column-pattern/table-column-pattern.component';
-import { RoleEditComponent } from './edit/edit.component';
-import { RoleMenuComponent } from './menu/menu.component';
+import { UserEditComponent } from './edit/edit.component';
 
 @Component({
-  selector: 'app-basic-role',
-  templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss']
+  selector: 'app-admin-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss']
 })
-export class RoleComponent {
+export class UserComponent {
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -24,13 +23,15 @@ export class RoleComponent {
     private _toastService: ToastService
   ) {
     this.refresh();
+    this._httpService.get('roles').then((res: any) => this.roles = res.items);
   }
 
   public loading: boolean = true;
   public columns = new TableColumnDefinition<any>([
     { id: 'selection', sticky: 'start' },
-    { id: 'name', header: 'routes.basic.role.name' },
-    { id: 'remark', header: 'routes.basic.role.remark' },
+    { id: 'name', header: 'routes.admin.user.name' },
+    { id: 'account', header: 'routes.admin.user.account' },
+    { id: 'role', header: 'routes.admin.user.role' },
     { id: 'operation', sticky: 'end' }
   ]);
   public rows: any[];
@@ -45,9 +46,12 @@ export class RoleComponent {
   } = {
       query: '',
       form: this._formBuilder.group({
-        name: ''
+        name: '',
+        account: '',
+        role: ''
       })
     };
+  public roles: any[];
 
   public async refresh(e?: any): Promise<void> {
     if (e) {
@@ -65,7 +69,7 @@ export class RoleComponent {
     let lastPage: number = -1;
     while (this.pageIndex > lastPage) {
       lastPage > -1 && (this.pageIndex = lastPage);
-      res = await this._httpService.get(`roles?${this.filter.query}sort=${this.sort}&offset=${this.pageSize * this.pageIndex}&limit=${this.pageSize}`);
+      res = await this._httpService.get(`users?${this.filter.query}sort=${this.sort}&offset=${this.pageSize * this.pageIndex}&limit=${this.pageSize}`);
       lastPage = res ? Math.max(0, Math.ceil(res.total / this.pageSize) - 1) : Number.MAX_VALUE;
     }
     if (res) {
@@ -99,14 +103,14 @@ export class RoleComponent {
   }
 
   public async edit(item?: any): Promise<void> {
-    if (await this._dialogService.open(RoleEditComponent, { data: item })) {
+    if (await this._dialogService.open(UserEditComponent, { data: item })) {
       this.refresh();
     }
   }
 
   public async delete(): Promise<void> {
     if (await this._dialogService.confirm(this._i18nService.translate('shared.notification.confirm'))) {
-      const res: boolean = await this._httpService.post('roles/batch', {
+      const res: boolean = await this._httpService.post('users/batch', {
         method: 'delete',
         data: this.selection.selected.map(i => i.id)
       }) !== undefined;
@@ -117,10 +121,24 @@ export class RoleComponent {
     }
   }
 
-  public async menu(id: number): Promise<void> {
-    var res: any = await this._dialogService.open(RoleMenuComponent, { data: id });
-    if (res && !res.success) {
-      this.refresh();
+  public async password(id: number): Promise<void> {
+    if (await this._dialogService.confirm(this._i18nService.translate('shared.notification.confirm'))) {
+      const res = this._httpService.delete(`users/${id}/password`).catch(async err => {
+        switch (err.status) {
+          case 410:
+            this._toastService.show(this._i18nService.translate(`routes.admin.user.error.gone.${err.error?.propertyName?.toLowerCase()}`));
+            this.refresh();
+            break;
+          case 422:
+            this._toastService.show(this._i18nService.translate('shared.notification.fail'));
+            break;
+          default:
+            break;
+        }
+      }) !== undefined;
+      if (res) {
+        this._toastService.show(this._i18nService.translate('shared.notification.success'));
+      }
     }
   }
 }

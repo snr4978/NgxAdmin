@@ -2,15 +2,15 @@
   <mat-sidenav #$filter mode="over" position="end" autoFocus="false">
     <form autocomplete="off" [formGroup]="filter.form">
       <mat-form-field>
-        <mat-label>{{ 'routes.basic.user.name' | translate }}</mat-label>
+        <mat-label>{{ 'routes.admin.user.name' | translate }}</mat-label>
         <input matInput formControlName="name">
       </mat-form-field>
       <mat-form-field>
-        <mat-label>{{ 'routes.basic.user.account' | translate }}</mat-label>
+        <mat-label>{{ 'routes.admin.user.account' | translate }}</mat-label>
         <input matInput formControlName="account">
       </mat-form-field>
       <mat-form-field>
-        <mat-label>{{ 'routes.basic.user.role' | translate }}</mat-label>
+        <mat-label>{{ 'routes.admin.user.role' | translate }}</mat-label>
         <mat-select formControlName="role">
           <mat-option *ngFor="let item of roles" [value]="item.id">{{item.name}}</mat-option>
         </mat-select>
@@ -67,7 +67,7 @@
               <button mat-icon-button matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button matTooltip="{{ 'routes.basic.user.password' | translate }}"
+              <button mat-icon-button matTooltip="{{ 'routes.admin.user.password' | translate }}"
                 (click)="password(row.id)">
                 <mat-icon>lock_open</mat-icon>
               </button>
@@ -75,7 +75,7 @@
           </ng-container>
           <ng-container *ngSwitchCase="'role'">
             <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="item.sortable===false">
-              {{ 'routes.basic.user.role' | translate }}</th>
+              {{ 'routes.admin.user.role' | translate }}</th>
             <td mat-cell *matCellDef="let row"> {{ row.role | field : 'name' | join }} </td>
           </ng-container>
           <ng-container *ngSwitchDefault>

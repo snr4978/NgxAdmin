@@ -9,7 +9,7 @@ import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
 
 @Component({
-  selector: 'app-basic-role-menu',
+  selector: 'app-admin-role-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [
@@ -125,7 +125,7 @@ export class RoleMenuComponent {
     const res = this._httpService.post(`roles/${this._id}/menu`, this._selection.selected).catch(async err => {
       switch (err.status) {
         case 410:
-          this._toastService.show(this._i18nService.translate(`routes.basic.role.error.gone.${err.error?.propertyName?.toLowerCase()}`));
+          this._toastService.show(this._i18nService.translate(`routes.admin.role.error.gone.${err.error?.propertyName?.toLowerCase()}`));
           this._dialogRef.close({ success: false });
           break;
         case 422:

@@ -6,11 +6,11 @@ import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
 
 @Component({
-  selector: 'app-basic-user-edit',
+  selector: 'app-admin-role-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class UserEditComponent {
+export class RoleEditComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -19,13 +19,11 @@ export class UserEditComponent {
     private _httpService: HttpService,
     private _i18nService: I18nService,
     private _toastService: ToastService,
-    private _dialogRef: MatDialogRef<UserEditComponent>
+    private _dialogRef: MatDialogRef<RoleEditComponent>
   ) {
-    this._httpService.get('roles').then((res: any) => this.roles = res.items);
     this.formGroup = this._formBuilder.group({
       name: [_data?.name, [Validators.required]],
-      account: [_data?.account, [Validators.required]],
-      role: [_data?.role.map((r: any) => r.id)]
+      remark: [_data?.remark]
     });
   }
 
@@ -34,9 +32,6 @@ export class UserEditComponent {
     return this._data?.id;
   }
 
-  //角色
-  public roles: any[];
-
   //表单
   public formGroup: FormGroup;
 
@@ -44,17 +39,16 @@ export class UserEditComponent {
   public async save(): Promise<void> {
     const data: any = {
       name: this.formGroup.controls['name'].value,
-      account: this.formGroup.controls['account'].value,
-      role: this.formGroup.controls['role'].value
+      remark: this.formGroup.controls['remark'].value
     };
     const res: boolean = (this.id ?
-      await this._httpService.put(`users/${this.id}`, data).catch(async err => {
+      await this._httpService.put(`roles/${this.id}`, data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
+            this._toastService.show(this._i18nService.translate(`routes.admin.role.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 410:
-            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.gone.${err.error?.propertyName?.toLowerCase()}`));
+            this._toastService.show(this._i18nService.translate(`routes.admin.role.error.gone.${err.error?.propertyName?.toLowerCase()}`));
             this._dialogRef.close({ success: false });
             break;
           case 422:
@@ -66,10 +60,10 @@ export class UserEditComponent {
             break;
         }
       }) :
-      await this._httpService.post('users', data).catch(async err => {
+      await this._httpService.post('roles', data).catch(async err => {
         switch (err.status) {
           case 409:
-            this._toastService.show(this._i18nService.translate(`routes.basic.user.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
+            this._toastService.show(this._i18nService.translate(`routes.admin.role.error.conflict.${err.error?.propertyName?.toLowerCase()}`));
             break;
           case 422:
             this._toastService.show(this._i18nService.translate('shared.notification.fail'));
