@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 export const webApis: { [key: string]: string } = {};
 
@@ -34,11 +35,20 @@ export class HttpService {
         [param: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
-    return this._http.request(method, this.url(api), options).toPromise();
+    const onProgress = options?.onProgress;
+    if (onProgress) {
+      options['reportProgress'] = true;
+      delete options.onProgress;
+    }
+    let observable = this._http.request(method, this.url(api), options);
+    if (onProgress) {
+      observable = observable.pipe(tap(onProgress));
+    }
+    return observable.toPromise();
   }
 
   public get(
@@ -49,7 +59,7 @@ export class HttpService {
         [header: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
@@ -59,7 +69,15 @@ export class HttpService {
       httpOptions.params = httpOptions.params || {};
       Object.assign(httpOptions.params, params);
     }
-    return this._http.get(this.url(api), httpOptions).toPromise();
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
+    let observable = this._http.get(this.url(api), httpOptions);
+    if (httpOptions.reportProgress) {
+      observable = observable.pipe(tap(options.onProgress));
+    }
+    return observable.toPromise();
   }
 
   public post(
@@ -73,7 +91,7 @@ export class HttpService {
         [param: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
@@ -82,7 +100,15 @@ export class HttpService {
     };
     Object.assign(httpOptions, options);
     httpOptions.headers['Content-type'] = 'application/json; charset=UTF-8';
-    return this._http.post(this.url(api), data, httpOptions).toPromise();
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
+    let observable = this._http.post(this.url(api), data, httpOptions);
+    if (httpOptions.reportProgress) {
+      observable = observable.pipe(tap(options.onProgress));
+    }
+    return observable.toPromise();
   }
 
   public put(
@@ -94,7 +120,7 @@ export class HttpService {
         [header: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
@@ -106,7 +132,15 @@ export class HttpService {
     if (params) {
       Object.assign(httpOptions.params, params);
     }
-    return this._http.put(this.url(api), data, httpOptions).toPromise();
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
+    let observable = this._http.put(this.url(api), data, httpOptions);
+    if (httpOptions.reportProgress) {
+      observable = observable.pipe(tap(options.onProgress));
+    }
+    return observable.toPromise();
   }
 
   public patch(
@@ -118,7 +152,7 @@ export class HttpService {
         [header: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
@@ -130,7 +164,15 @@ export class HttpService {
     if (params) {
       Object.assign(httpOptions.params, params);
     }
-    return this._http.patch(this.url(api), data, httpOptions).toPromise();
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
+    let observable = this._http.patch(this.url(api), data, httpOptions);
+    if (httpOptions.reportProgress) {
+      observable = observable.pipe(tap(options.onProgress));
+    }
+    return observable.toPromise();
   }
 
   public delete(
@@ -141,7 +183,7 @@ export class HttpService {
         [header: string]: string | string[];
       };
       observe?: 'body' | 'events' | 'response';
-      reportProgress?: boolean;
+      onProgress?: (e: any) => void;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     }): Promise<Object> {
@@ -151,7 +193,15 @@ export class HttpService {
       httpOptions.params = httpOptions.params || {};
       Object.assign(httpOptions.params, params);
     }
-    return this._http.delete(this.url(api), httpOptions).toPromise();
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
+    let observable = this._http.delete(this.url(api), httpOptions);
+    if (httpOptions.reportProgress) {
+      observable = observable.pipe(tap(options.onProgress));
+    }
+    return observable.toPromise();
   }
 
   public download(
@@ -163,10 +213,10 @@ export class HttpService {
       headers?: {
         [header: string]: string | string[];
       };
+      onProgress?: (e: any) => void;
       params?: {
         [param: string]: string | string[];
       };
-      reportProgress?: boolean;
       withCredentials?: boolean;
     }): Promise<Object> {
     const httpOptions: any = {
@@ -174,19 +224,26 @@ export class HttpService {
       responseType: 'blob'
     };
     Object.assign(httpOptions, options);
+    if (httpOptions.onProgress) {
+      httpOptions.reportProgress = true;
+      delete httpOptions.onProgress;
+    }
     return new Promise((resolve, reject) => {
-      this._http.request(method || 'get', this.url(api), httpOptions)
-        .subscribe((res: any) => {
-          if (res.type == 4) {
-            const url = window.URL.createObjectURL(res.body);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = name;
-            a.click();
-            window.URL.revokeObjectURL(url);
-            resolve(res);
-          }
-        }, (error: any) => reject(error));
+      let observable = this._http.request(method || 'get', this.url(api), httpOptions);
+      if (httpOptions.reportProgress) {
+        observable = observable.pipe(tap(options.onProgress));
+      }
+      observable.subscribe((res: any) => {
+        if (res.type == 4) {
+          const url = window.URL.createObjectURL(res.body);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = name;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          resolve(res);
+        }
+      }, (error: any) => reject(error));
     });
   }
 }
