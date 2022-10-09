@@ -1,5 +1,5 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
 import { Subscription } from 'rxjs';
 import { DialogAlertComponent } from '@app/shared/components/dialog-alert/dialog-alert.component';
@@ -15,7 +15,7 @@ export class DialogService {
     private _dialog: MatDialog
   ) { }
 
-  public alert(content: string): Promise<Object> {
+  public alert(content: string): Promise<any> {
     return new Promise(resolve => {
       const subscription: Subscription = this._dialog.open(DialogAlertComponent, {
         width: '600px',
@@ -27,7 +27,7 @@ export class DialogService {
     });
   }
 
-  public confirm(content: string): Promise<Object> {
+  public confirm(content: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const subscription: Subscription = this._dialog.open(DialogConfirmComponent, {
         width: '600px',
@@ -48,7 +48,7 @@ export class DialogService {
     type?: 'text' | 'select' | 'number' | 'password',
     range?: number[] | {},
     required?: boolean
-  }): Promise<Object> {
+  }): Promise<any> {
     return new Promise((resolve, reject) => {
       const subscription: Subscription = this._dialog.open(DialogPromptComponent, {
         width: '600px',
@@ -71,7 +71,7 @@ export class DialogService {
     }).catch(() => { });;
   }
 
-  public open<T, D = any>(component: ComponentType<T> | TemplateRef<T>, config?: MatDialogConfig<D>): Promise<Object> {
+  public open<T, D = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): Promise<any> {
     if (config) {
       if (config.width === undefined) {
         config.width = '600px';
@@ -94,6 +94,24 @@ export class DialogService {
           resolve(result);
         });
     });
+  }
+
+  public show<T, D = any, R = any>(template: TemplateRef<T>, config?: MatDialogConfig<D>): MatDialogRef<T, R> {
+    if (config) {
+      if (config.width === undefined) {
+        config.width = '600px';
+      }
+      if (config.restoreFocus !== true) {
+        config.restoreFocus = false;
+      }
+    }
+    else {
+      config = {
+        width: '600px',
+        restoreFocus: false
+      }
+    }
+    return this._dialog.open(template, config);
   }
 
   public close(): void {
