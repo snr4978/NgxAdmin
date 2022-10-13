@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
@@ -26,21 +26,20 @@ export class PasswordComponent {
     this.formGroup = this._formBuilder.group({
       current: ['', [Validators.required]],
       replacement: ['', [Validators.required]],
-      confirm: ['', [Validators.required, this.confirmValidators]]
+      confirm: ['', [Validators.required]]
+    }, {
+      validators: (formGroup: FormGroup) => {
+        const replacement = formGroup.controls['replacement'];
+        const confirm = formGroup.controls['confirm'];
+        const error = replacement.value == confirm.value ? null : { confirm: true };
+        confirm.setErrors(error);
+        return error;
+      }
     });
   }
 
   //表单
   public formGroup: FormGroup;
-
-  //密码确认验证
-  private confirmValidators: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-    if (control.parent) {
-      return control.value != control.parent.controls['replacement'].value ? {
-        confirm: true
-      } : null;
-    }
-  };
 
   //提交修改
   public async change() {
