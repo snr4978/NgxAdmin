@@ -65,7 +65,7 @@ const PIPES = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MODULES
+    ...MODULES
   ],
   exports: [
     CommonModule,

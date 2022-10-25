@@ -13,7 +13,6 @@ import { TokenInterceptor } from '@app/core/interceptors/token.interceptor';
 import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 import { AppComponent } from './app.component';
 
-
 @NgModule({
   declarations: [
     AppComponent
