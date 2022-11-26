@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, Renderer2 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from '@app/core/services/http.service';
 import Cropper from 'cropperjs';

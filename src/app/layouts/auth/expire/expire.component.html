@@ -3,7 +3,7 @@
     <mat-card-title>{{ 'layouts.auth.expire.title' | translate }}</mat-card-title>
     <mat-card-subtitle>{{ 'layouts.auth.expire.subtitle' | translate }}</mat-card-subtitle>
     <mat-card-content>
-      <form #form autocomplete="off" [formGroup]="formGroup">
+      <form #$form autocomplete="off" [formGroup]="form">
         <mat-form-field appearance="outline" hideRequiredMarker="true">
           <mat-label>{{ 'layouts.auth.expire.current' | translate }}</mat-label>
           <input matInput type="password" formControlName="current" required>
@@ -16,7 +16,7 @@
           <mat-label>{{ 'layouts.auth.expire.confirm' | translate }}</mat-label>
           <input matInput type="password" formControlName="confirm" required>
         </mat-form-field>
-        <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading||formGroup.invalid" (click)="continue()">{{ 'layouts.auth.expire.continue' | translate | uppercase }}</button>
+        <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading || form.invalid" (click)="continue()">{{ 'layouts.auth.expire.continue' | translate | uppercase }}</button>
       </form>
     </mat-card-content>
   </mat-card>

@@ -3,7 +3,7 @@
       <mat-card-title>{{ 'layouts.auth.initial.title' | translate }}</mat-card-title>
       <mat-card-subtitle>{{ 'layouts.auth.initial.subtitle' | translate }}</mat-card-subtitle>
       <mat-card-content>
-        <form #form autocomplete="off" [formGroup]="formGroup">
+        <form #$form autocomplete="off" [formGroup]="form">
           <mat-form-field appearance="outline" hideRequiredMarker="true">
             <mat-label>{{ 'layouts.auth.initial.replacement' | translate }}</mat-label>
             <input matInput type="password" formControlName="replacement" required>
@@ -12,7 +12,7 @@
             <mat-label>{{ 'layouts.auth.initial.confirm' | translate }}</mat-label>
             <input matInput type="password" formControlName="confirm" required>
           </mat-form-field>
-          <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading||formGroup.invalid" (click)="continue()">{{ 'layouts.auth.initial.continue' | translate | uppercase }}</button>
+          <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading || form.invalid" (click)="continue()">{{ 'layouts.auth.initial.continue' | translate | uppercase }}</button>
         </form>
       </mat-card-content>
     </mat-card>

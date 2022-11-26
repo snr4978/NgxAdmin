@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
@@ -14,6 +14,8 @@ import { ToastService } from '@app/core/services/toast.service';
 })
 export class PasswordComponent {
 
+  private _form: FormGroup;
+
   constructor(
     private _formBuilder: FormBuilder,
     private _dialogService: DialogService,
@@ -23,14 +25,14 @@ export class PasswordComponent {
     private _toastService: ToastService,
     private _dialogRef: MatDialogRef<PasswordComponent>
   ) {
-    this.formGroup = this._formBuilder.group({
+    this._form = this._formBuilder.group({
       current: ['', [Validators.required]],
       replacement: ['', [Validators.required]],
       confirm: ['', [Validators.required]]
     }, {
-      validators: (formGroup: FormGroup) => {
-        const replacement = formGroup.controls['replacement'];
-        const confirm = formGroup.controls['confirm'];
+      validators: (form: FormGroup) => {
+        const replacement = form.controls.replacement;
+        const confirm = form.controls.confirm;
         const error = replacement.value == confirm.value ? null : { confirm: true };
         confirm.setErrors(error);
         return error;
@@ -38,14 +40,14 @@ export class PasswordComponent {
     });
   }
 
-  //表单
-  public formGroup: FormGroup;
+  public get form() {
+    return this._form;
+  }
 
-  //提交修改
   public async change() {
     const res = await this._httpService.put('users/current/password', {
-      current: this.formGroup.controls['current'].value,
-      replacement: this.formGroup.controls['replacement'].value
+      current: this._form.controls.current.value,
+      replacement: this._form.controls.replacement.value
     }).catch(err => {
       if (err.status == 422) {
         this._toastService.show(this._i18nService.translate(`layouts.admin.password.invalid.${err.error}`));

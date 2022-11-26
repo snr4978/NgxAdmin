@@ -16,6 +16,10 @@ import { TooltipComponent } from '../components/tooltip/tooltip.component';
 })
 export class TooltipDirective extends MatTooltip {
 
+  private _template: TemplateRef<any>;
+  
+  protected readonly _tooltipComponent = TooltipComponent;
+
   constructor(
     overlay: Overlay,
     elementRef: ElementRef<HTMLElement>,
@@ -32,9 +36,6 @@ export class TooltipDirective extends MatTooltip {
     super(overlay, elementRef, scrollDispatcher, viewContainerRef, ngZone, platform, ariaDescriber, focusMonitor, scrollStrategy, dir, defaultOptions);
     super['_portal'] = new ComponentPortal(this._tooltipComponent, viewContainerRef);
   }
-
-  protected readonly _tooltipComponent = TooltipComponent;
-  private _template: TemplateRef<any>;
 
   @Input('matTooltipTemplate')
   public set template(value: TemplateRef<any>) {

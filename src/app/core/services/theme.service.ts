@@ -58,5 +58,5 @@ export class ThemeService {
     this.onchange.emit(this._current = value);
   }
 
-  public onchange: EventEmitter<string> = new EventEmitter<string>();
+  public onchange: EventEmitter<string> = new EventEmitter();
 }

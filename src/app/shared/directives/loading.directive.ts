@@ -7,6 +7,11 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 })
 export class LoadingDirective implements AfterViewInit {
 
+  private _wrapper: any;
+  private _overlay: any;
+  private _spinner: MatSpinner;
+  private _value: boolean;
+
   constructor(
     private _elementRef: ElementRef,
     private _componentFactoryResolver: ComponentFactoryResolver,
@@ -96,9 +101,4 @@ export class LoadingDirective implements AfterViewInit {
   public set color(color: ThemePalette) {
     this._spinner.color = color;
   }
-
-  private _wrapper: any;
-  private _overlay: any;
-  private _spinner: MatSpinner;
-  private _value: boolean;
 }

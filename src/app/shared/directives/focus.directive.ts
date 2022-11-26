@@ -5,6 +5,8 @@ import { Directive, ElementRef, Input } from '@angular/core';
 })
 export class FocusDirective {
 
+  private _value: boolean = null;
+
   constructor(
     private _elementRef: ElementRef
   ) { }
@@ -21,6 +23,4 @@ export class FocusDirective {
       setTimeout(() => this._elementRef.nativeElement.focus());
     }
   };
-
-  private _value: boolean = null;
 }

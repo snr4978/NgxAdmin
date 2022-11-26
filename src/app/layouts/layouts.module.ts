@@ -8,6 +8,8 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { PasswordComponent } from './admin/password/password.component';
 import { MessageComponent } from './admin/message/message.component';
+import { MessageListComponent } from './admin/message/list/list.component';
+import { MessageContentComponent } from './admin/message/content/content.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { MessageComponent } from './admin/message/message.component';
     AdminComponent,
     ProfileComponent,
     PasswordComponent,
-    MessageComponent
+    MessageComponent,
+    MessageListComponent,
+    MessageContentComponent
   ],
   imports: [
     SharedModule

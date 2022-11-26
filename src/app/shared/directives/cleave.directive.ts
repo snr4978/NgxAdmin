@@ -6,6 +6,8 @@ import Cleave from 'cleave.js';
 })
 export class CleaveDirective {
 
+  private _instance: Cleave;
+
   constructor(
     private _elementRef: ElementRef
   ) { }
@@ -17,6 +19,4 @@ export class CleaveDirective {
     }
     this._instance = new Cleave(this._elementRef.nativeElement, options);
   }
-
-  private _instance: Cleave;
 }

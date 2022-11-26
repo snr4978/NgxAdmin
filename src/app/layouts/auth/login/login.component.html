@@ -14,7 +14,7 @@
     <mat-card-title>{{ settings.appFullName | translate }}</mat-card-title>
     <mat-card-subtitle>{{ settings.appDescription | translate }}</mat-card-subtitle>
     <mat-card-content>
-      <form #form autocomplete="off" [formGroup]="formGroup">
+      <form #$form autocomplete="off" [formGroup]="form">
         <mat-form-field appearance="outline" hideRequiredMarker="true">
           <mat-label>{{ 'layouts.auth.login.account' | translate }}</mat-label>
           <input matInput formControlName="account" required>
@@ -23,7 +23,7 @@
           <mat-label>{{ 'layouts.auth.login.password' | translate }}</mat-label>
           <input matInput type="password" formControlName="password" required>
         </mat-form-field>
-        <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading||formGroup.invalid" (click)="login()">{{ 'layouts.auth.login.submit' | translate | uppercase }}</button>
+        <button mat-raised-button color="primary" [loading]="loading" [disabled]="loading || form.invalid" (click)="login()">{{ 'layouts.auth.login.submit' | translate | uppercase }}</button>
       </form>
     </mat-card-content>
     <mat-card-footer>{{ settings.appCopyright | translate }}</mat-card-footer>

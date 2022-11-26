@@ -12,7 +12,7 @@ export class TableColumnPatternComponent {
 
   @Input()
   public set columns(value: TableColumnDefinition<any>) {
-    (this._columns = value).forEach(item => item.display ??= true);
+    (this._columns = value)?.forEach(item => item.display ??= true);
   }
 
   public get columns(): TableColumnDefinition<any> {

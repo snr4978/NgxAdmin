@@ -1,0 +1,98 @@
+<mat-sidenav-container hasBackdrop="true">
+  <mat-sidenav #$filter mode="over" position="end" autoFocus="false">
+    <form autocomplete="off" [formGroup]="filter">
+      <mat-form-field>
+        <mat-label>{{ 'layouts.admin.message.subject' | translate }}</mat-label>
+        <input matInput formControlName="subject">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'layouts.admin.message.source' | translate }}</mat-label>
+        <input matInput formControlName="source">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'layouts.admin.message.time' | translate }}</mat-label>
+        <mat-date-range-input [rangePicker]="$picker">
+          <input matStartDate readonly formControlName="start" (focus)="$picker.open()">
+          <input matEndDate readonly formControlName="end" (focus)="$picker.open()">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="$picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #$picker></mat-date-range-picker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'layouts.admin.message.flag' | translate }}</mat-label>
+        <mat-select formControlName="flag">
+          <mat-option></mat-option>
+          <mat-option [value]="false">{{ 'layouts.admin.message.unread' | translate }}</mat-option>
+          <mat-option [value]="true">{{ 'layouts.admin.message.read' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <button mat-flat-button color="primary" (click)="search(); $filter.toggle()">{{ 'shared.operation.filter' | translate | uppercase }}</button>
+    <button mat-stroked-button (click)="reset(); $filter.toggle()">{{ 'shared.operation.reset' | translate | uppercase }}</button>
+  </mat-sidenav>
+  <mat-sidenav-content [loading]="loading">
+    <div class="row-auto">
+      <mat-toolbar *ngIf="selection.hasValue(); else $toolbar" class="app-background-primary-lighter">
+        <span class="spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : selection.selected.length } }}</span>
+        <button mat-icon-button matTooltip="{{ 'layouts.admin.message.markas' | translate }}{{ 'layouts.admin.message.read' | translate | lowercase }}" (click)="mark(true)">
+          <mat-icon>drafts</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="{{ 'layouts.admin.message.markas' | translate }}{{ 'layouts.admin.message.unread' | translate | lowercase }}" (click)="mark(false)">
+          <mat-icon>mail</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="{{ 'shared.operation.deletes' | translate }}" (click)="delete()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-toolbar>
+      <ng-template #$toolbar>
+        <mat-toolbar class="app-background-card">
+          <button mat-button color="primary" (click)="refresh()">{{ 'layouts.admin.message.receive' | translate | uppercase }}</button>
+          <span class="spacer"></span>
+          <button mat-icon-button matTooltip="{{ 'shared.operation.dyeing' | translate }}" [ngClass]="{ 'app-foreground-primary': this.colorful }" (click)="this.colorful = !this.colorful">
+            <mat-icon>brush</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="{{ 'shared.operation.filter' | translate }}" (click)="$filter.toggle()">
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </mat-toolbar>
+        <mat-divider></mat-divider>
+      </ng-template>
+    </div>
+    <div class="row-fill">
+      <table mat-table [dataSource]="rows">
+        <ng-container matColumnDef="select" sticky>
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="select($event)" [checked]="selection.hasValue() && selection.selected.length == rows.length" 
+              [indeterminate]="selection.hasValue() && selection.selected.length != rows.length"></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"></mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef>{{ 'layouts.admin.message.subject' | translate }}</th>
+          <td mat-cell [class.bold]="!row.flag" *matCellDef="let row">
+            <a (click)="read(row.id)">{{row.subject}}</a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef>{{ 'layouts.admin.message.time' | translate }}</th>
+          <td mat-cell *matCellDef="let row"> {{ row.time | date:'yyyy-MM-dd HH:mm' }} </td>
+        </ng-container>
+        <ng-container matColumnDef="source">
+          <th mat-header-cell *matHeaderCellDef>{{ 'layouts.admin.message.source' | translate }}</th>
+          <td mat-cell *matCellDef="let row"> {{ row.source.name }} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;" [ngClass]="{ 'app-background-accent-lighter': colorful && !row.flag }"></tr>
+        <tr class="mat-row" [hidden]="loading" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="columns.length">{{ 'shared.data.empty' | translate }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="row-auto">
+      <mat-divider></mat-divider>
+      <mat-paginator [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="refresh($event)"></mat-paginator>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

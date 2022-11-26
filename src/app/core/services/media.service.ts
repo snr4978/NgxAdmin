@@ -30,5 +30,5 @@ export class MediaService {
     return this._current;
   }
 
-  public onchange: EventEmitter<string> = new EventEmitter<string>();
+  public onchange: EventEmitter<string> = new EventEmitter();
 }

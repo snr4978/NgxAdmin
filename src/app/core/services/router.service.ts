@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, Navigation } from '@angular/router';
+import { DynamicReuseStrategy } from '@app/core/strategies/dynamic.strategy';
 
 export interface RouterItem {
   id: number;
@@ -19,6 +20,11 @@ export interface RouterItem {
 })
 export class RouterService {
 
+  private _root: RouterItem[] = [];
+  private _items: { [key: number]: RouterItem; } = {};
+  private _path: { [key: string]: number[]; } = {};
+  private _active: number[] = [];
+
   constructor(
     private _router: Router
   ) {
@@ -33,14 +39,6 @@ export class RouterService {
       }
     });
   }
-
-  private _root: RouterItem[] = [];
-
-  private _items: { [key: number]: RouterItem; } = {};
-
-  private _path: { [key: string]: number[]; } = {};
-
-  private _active: number[] = [];
 
   public init(items: RouterItem[]): RouterItem[] {
     items.forEach(item => {
@@ -119,10 +117,32 @@ export class RouterService {
     }
   }
 
+  public current(): Navigation {
+    return this._router.getCurrentNavigation();
+  }
+
   public navigate(url: string | any[], params?: { [key: string]: any }): Promise<boolean> {
     return this._router.navigate(
       typeof url == 'string' ? [url] : url,
       params ? { queryParams: params } : undefined
     );
+  }
+
+  public reuse(url: string | any[], value: boolean): Promise<void> {
+    if (this._router.getCurrentNavigation()) {
+      return new Promise(resolve => setTimeout(() => this.reuse(url, value).then(resolve)));
+    }
+    else {
+      let urlTree = this._router.createUrlTree(typeof url == 'string' ? [url] : url);
+      urlTree = this._router.urlHandlingStrategy.merge(urlTree, this._router['rawUrlTree']);
+      const strategy = this._router.routeReuseStrategy as DynamicReuseStrategy;
+      if (value) {
+        strategy.addUrl(urlTree.toString());
+      }
+      else {
+        strategy.removeUrl(urlTree.toString());
+      }
+      return Promise.resolve();
+    }
   }
 }

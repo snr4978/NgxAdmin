@@ -12,7 +12,6 @@ export class AuthComponent {
     private _themeService: ThemeService
   ) { }
 
-  //主题
   public get theme(): string {
     return this._themeService.current;
   };

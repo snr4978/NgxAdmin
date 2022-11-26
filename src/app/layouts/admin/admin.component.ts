@@ -19,6 +19,9 @@ import * as screenfull from 'screenfull';
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
+  queries: {
+    _$progress: new ViewChild('$progress')
+  },
   animations: [
     trigger('expand', [
       state('collapsed', style({ height: '0', maxHeight: '0' })),
@@ -28,6 +31,11 @@ import * as screenfull from 'screenfull';
   ]
 })
 export class AdminComponent implements OnDestroy {
+  
+  private _$progress: NgProgressComponent;
+  private _alive: boolean;
+  private _onlineHub: any;
+  private _messageHub: any;
 
   constructor(
     private _dialogService: DialogService,
@@ -40,6 +48,7 @@ export class AdminComponent implements OnDestroy {
     private _themeService: ThemeService,
     private _toastService: ToastService
   ) {
+    this._alive = true;
     this.init();
     this.online();
     this.message();
@@ -52,10 +61,6 @@ export class AdminComponent implements OnDestroy {
     this._onlineHub?.stop();
     this._messageHub?.stop();
   }
-
-  //进度条
-  @ViewChild('$progress', { static: true })
-  private _progress: NgProgressComponent;
 
   //设置
   public get settings(): AppSettings {
@@ -149,8 +154,6 @@ export class AdminComponent implements OnDestroy {
   }
 
   //上线
-  private _alive: boolean = true;
-  private _onlineHub: any;
   private async online(): Promise<void> {
     if (this._alive) {
       this._onlineHub = await this._signalrService.connect('identity', {
@@ -185,7 +188,6 @@ export class AdminComponent implements OnDestroy {
         this._routerService.navigate('/message', { id });
       }
     };
-  private _messageHub: any;
   private async message(): Promise<void> {
     const refresh = async (): Promise<void> => {
       const response: any = await this._httpService.get('users/current/messages?flag=false&limit=5').catch();
@@ -242,7 +244,7 @@ export class AdminComponent implements OnDestroy {
 
   //注销
   public logout(): void {
-    this._progress.progressRef = null;
+    this._$progress.progressRef = null;
     this._httpService.delete('sessions', { reason: 'Logout' });
     this._routerService.navigate('/auth/login');
   }

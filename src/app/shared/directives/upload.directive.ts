@@ -9,6 +9,11 @@ import { webApis } from '@app/core/services/http.service';
 })
 export class UploadDirective implements AfterViewInit, OnDestroy {
 
+  private _url: string;
+  private _queue: MatFileUploadQueueComponent;
+  private _element: Element;
+  private _override: Subscription;
+
   constructor(
     private element: ElementRef
   ) { }
@@ -27,6 +32,37 @@ export class UploadDirective implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this._override.unsubscribe();
   }
+
+  @Input("fileUploadFor")
+  public set fileUploadQueue(value: any) {
+    if (value) {
+      this._element = ɵgetHostElement(value);
+      this._element.classList.add('mat-file-upload-queue');
+      this._queue = value;
+      const token = localStorage.getItem('token');
+      if (token) {
+        this._queue.httpRequestHeaders = new HttpHeaders({ 'Token': token });
+      }
+      if (this._url) {
+        this._queue.httpUrl = this._url;
+      }
+    }
+  }
+
+  @Input("url")
+  public set fileUploadQueueHttpUrl(value: string | [string, string]) {
+    if (value) {
+      this._url = typeof value == 'string' ?
+        `${webApis['default']}/api/${value}` :
+        `${webApis[value[0]]}/${value[1]}`;
+      if (this._queue) {
+        this._queue.httpUrl = this._url;
+      }
+    }
+  }
+
+  @Output()
+  public onFileSelected: EventEmitter<File[]> = new EventEmitter<File[]>();
 
   @HostListener("change")
   public onChange(): any {
@@ -66,40 +102,4 @@ export class UploadDirective implements AfterViewInit, OnDestroy {
   public onDropOver(event: any): any {
     event.preventDefault();
   }
-
-  @Input("fileUploadFor")
-  public set fileUploadQueue(value: any) {
-    if (value) {
-      this._element = ɵgetHostElement(value);
-      this._element.classList.add('mat-file-upload-queue');
-      this._queue = value;
-      const token = localStorage.getItem('token');
-      if (token) {
-        this._queue.httpRequestHeaders = new HttpHeaders({ 'Token': token });
-      }
-      if (this._url) {
-        this._queue.httpUrl = this._url;
-      }
-    }
-  }
-
-  @Input("url")
-  public set fileUploadQueueHttpUrl(value: string | [string, string]) {
-    if (value) {
-      this._url = typeof value == 'string' ?
-        `${webApis['default']}/api/${value}` :
-        `${webApis[value[0]]}/${value[1]}`;
-      if (this._queue) {
-        this._queue.httpUrl = this._url;
-      }
-    }
-  }
-
-  @Output()
-  public onFileSelected: EventEmitter<File[]> = new EventEmitter<File[]>();
-
-  private _url: string;
-  private _queue: MatFileUploadQueueComponent;
-  private _element: Element;
-  private _override: Subscription;
 }

@@ -63,6 +63,11 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
       }
     }
   }, {
+    provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+    useValue: {
+      useUtc: true
+    }
+  }, {
     provide: NGX_MAT_DATE_FORMATS,
     useValue: {
       parse: {
@@ -74,6 +79,11 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
         dateA11yLabel: 'YYYY-MM-DD',
         monthYearA11yLabel: 'YYYY-MM',
       }
+    }
+  }, {
+    provide: NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+    useValue: {
+      useUtc: true
     }
   }, {
     provide: MAT_CHECKBOX_DEFAULT_OPTIONS,

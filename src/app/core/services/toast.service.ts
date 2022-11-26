@@ -8,6 +8,8 @@ import { MediaService } from '@app/core/services/media.service';
 })
 export class ToastService {
 
+  private _horizontalPosition: MatSnackBarHorizontalPosition;
+
   constructor(
     private _snackBar: MatSnackBar,
     private _mediaService: MediaService
@@ -23,8 +25,6 @@ export class ToastService {
       }
     });
   }
-
-  private _horizontalPosition: MatSnackBarHorizontalPosition;
 
   public show(message: string | ComponentType<any>): MatSnackBarRef<any> {
     const config = {
