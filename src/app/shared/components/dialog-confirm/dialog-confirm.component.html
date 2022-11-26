@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ 'shared.dialog.title' | translate }}</h2>
+<h2 mat-dialog-title>{{ title || ('shared.dialog.title' | translate) }}</h2>
 <div mat-dialog-content>
   <p [innerHTML]="content"></p>
 </div>

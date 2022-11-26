@@ -15,11 +15,16 @@ export class DialogService {
     private _dialog: MatDialog
   ) { }
 
-  public alert(content: string): Promise<any> {
+  public alert(content: string, options?: {
+    title?: string
+  }): Promise<any> {
     return new Promise(resolve => {
       const subscription: Subscription = this._dialog.open(DialogAlertComponent, {
         width: '600px',
-        data: content
+        data: {
+          content: content,
+          title: options?.title
+        }
       }).afterClosed().subscribe(() => {
         subscription.unsubscribe();
         resolve(true);
@@ -27,11 +32,16 @@ export class DialogService {
     });
   }
 
-  public confirm(content: string): Promise<any> {
+  public confirm(content: string, options?: {
+    title?: string
+  }): Promise<any> {
     return new Promise((resolve, reject) => {
       const subscription: Subscription = this._dialog.open(DialogConfirmComponent, {
         width: '600px',
-        data: content
+        data: {
+          content: content,
+          title: options?.title
+        }
       }).afterClosed().subscribe(result => {
         subscription.unsubscribe();
         if (result) {
@@ -45,6 +55,7 @@ export class DialogService {
   }
 
   public prompt(content: string, value?: string, options?: {
+    title?: string,
     type?: 'text' | 'select' | 'number' | 'password',
     range?: number[] | {},
     required?: boolean
@@ -55,6 +66,7 @@ export class DialogService {
         data: {
           content: content,
           value: value,
+          title: options?.title,
           type: options?.type,
           range: options?.range,
           required: options?.required
@@ -68,7 +80,7 @@ export class DialogService {
           reject();
         }
       });
-    }).catch(() => { });;
+    }).catch(() => { });
   }
 
   public open<T, D = any>(component: ComponentType<T>, config?: MatDialogConfig<D>): Promise<any> {

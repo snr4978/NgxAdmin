@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'dialog-prompt',
+  selector: 'app-dialog-prompt',
   templateUrl: './dialog-prompt.component.html',
   styleUrls: ['./dialog-prompt.component.scss']
 })
@@ -15,6 +15,10 @@ export class DialogPromptComponent {
 
   public get text(): string {
     return this._data.content;
+  }
+
+  public get title(): string {
+    return this._data.title;
   }
 
   public get type(): string {
