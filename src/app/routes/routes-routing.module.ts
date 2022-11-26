@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, RouteReuseStrategy } from '@angular/router';
+import { DynamicReuseStrategy } from '@app/core/strategies/dynamic.strategy';
 import { ActivateGuard } from '@app/core/guards/activate.guard';
 import { LayoutsModule } from '@app/layouts/layouts.module';
 import { AdminComponent } from '@app/layouts/admin/admin.component';
@@ -56,6 +57,12 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule
+  ],
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: DynamicReuseStrategy
+    }
   ]
 })
 export class RoutesRoutingModule { }
