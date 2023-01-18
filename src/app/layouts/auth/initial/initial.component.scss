@@ -6,32 +6,32 @@
   align-items: center;
   place-content: center;
 
-  .mat-card {
+  .mat-mdc-card {
     max-width: 480px;
     background-color: transparent;
     box-shadow: none;
 
-    .mat-card-title,
-    .mat-card-subtitle {
+    .mat-mdc-card-title,
+    .mat-mdc-card-subtitle {
       text-align: center;
     }
 
-    .mat-card-title {
-      margin-bottom: 28px;
+    .mat-mdc-card-title {
+      margin-bottom: 24px;
+      font-size: 24px;
     }
 
-    .mat-card-content {
-      margin-top: 24px;
+    .mat-mdc-card-content {
+      margin: 24px 0;
 
-      .mat-form-field {
+      .mat-mdc-form-field {
         width: 100%;
         margin-bottom: 0;
       }
 
-      .mat-button-base {
+      .mat-mdc-button-base {
         width: 100%;
-        padding-top: .25em;
-        padding-bottom: .25em;
+        height: 48px;
       }
     }
   }

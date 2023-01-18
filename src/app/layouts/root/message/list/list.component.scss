@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  height: 100%;
+
+  .mat-sidenav-container {
+    height: 100%;
+
+    .mat-sidenav {
+      padding: 24px;
+      width: 300px;
+
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+
+      .mat-mdc-button-base {
+        margin: 8px 0;
+        width: 100%;
+      }
+    }
+
+    .mat-sidenav-content {
+      display: flex;
+      flex-direction: column;
+
+      .row-auto {
+        flex: 0 0 auto;
+
+        >.mat-toolbar {
+
+          &+.mat-divider {
+            margin-top: -1px;
+          }
+
+          >.spacer {
+            flex: 1 1 auto;
+            font-size: 14px;
+
+            &:first-child {
+              margin-left: 8px;
+            }
+          }
+        }
+      }
+
+      .row-fill {
+        flex: 1 1 auto;
+        overflow: auto;
+
+        >.mat-mdc-table {
+          width: 100%;
+
+          .mat-mdc-header-cell,
+          .mat-mdc-cell {
+            padding-right: 40px;
+            white-space: nowrap;
+
+            &:first-child {
+              padding-right: 16px;
+              width: 40px;
+            }
+
+            &:nth-child(2) {
+              padding-left: 0;
+              width: 100%;
+
+              &.light {
+                font-weight: 300;
+              }
+
+              &.bold {
+                font-weight: 700;
+              }
+            }
+
+            &:last-child {
+              padding-right: 24px;
+            }
+
+            >a {
+              cursor: pointer;
+            }
+          }
+
+          .mat-mdc-no-data-row {
+            height: 52px;
+
+            >td {
+              position: absolute;
+              width: 100%;
+              height: 52px;
+              padding: 0;
+              text-align: center;
+              line-height: 52px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

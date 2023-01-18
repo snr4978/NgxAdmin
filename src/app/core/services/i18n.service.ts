@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 export interface I18nItem {
   lang: string;
@@ -13,14 +14,17 @@ export const i18nItems: I18nItem[] = [];
 })
 export class I18nService {
 
+  private _observable: Observable<LangChangeEvent>;
+
   constructor(
     private _translateService: TranslateService
   ) {
-    _translateService.use(localStorage.getItem('i18n') || _translateService.getBrowserCultureLang());
+    this._translateService.use(localStorage.getItem('i18n') || _translateService.getBrowserCultureLang() || 'zh-CN');
+    this._observable = this._translateService.onLangChange.asObservable();
   }
 
-  public get onchange(): EventEmitter<LangChangeEvent> {
-    return this._translateService.onLangChange;
+  public get onchange(): Observable<LangChangeEvent> {
+    return this._observable;
   }
 
   public get items(): I18nItem[] {

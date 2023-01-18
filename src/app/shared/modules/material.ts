@@ -46,7 +46,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { NgxMatMomentAdapter, NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular-material-components/moment-adapter';
 import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
-import { MatFileUploadModule } from 'angular-material-fileupload';
+// import { MatFileUploadModule } from 'angular-material-fileupload';
 
 @NgModule({
   providers: [{
@@ -159,7 +159,7 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
-    MatFileUploadModule,
+    // MatFileUploadModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,

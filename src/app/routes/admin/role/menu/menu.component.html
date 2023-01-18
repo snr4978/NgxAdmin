@@ -24,6 +24,6 @@
   </ng-template>
 </div>
 <div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ 'shared.dialog.cancel' | translate | uppercase }}</button>
   <button mat-button color="primary" (click)="save()">{{ 'shared.dialog.ok' | translate | uppercase }}</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>{{ 'shared.dialog.cancel' | translate | uppercase }}</button>
 </div>

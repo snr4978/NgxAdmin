@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { join } from 'lodash-es';
+import { join } from 'lodash';
 
 @Pipe({
   name: 'join'

@@ -22,6 +22,11 @@ import { ToastService } from '@app/core/services/toast.service';
 })
 export class RoleMenuComponent {
 
+  private _loading: boolean = true;
+  private _ctrl: NestedTreeControl<any>;
+  private _tree: MatTreeNestedDataSource<any>;
+  private _selection: SelectionModel<number>;
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
     private _id: any,
@@ -53,11 +58,6 @@ export class RoleMenuComponent {
     });
   }
 
-  private _loading: boolean = true;
-  private _ctrl: NestedTreeControl<any>;
-  private _tree: MatTreeNestedDataSource<any>;
-  private _selection: SelectionModel<number>;
-
   public get loading() {
     return this._loading;
   }
@@ -74,11 +74,9 @@ export class RoleMenuComponent {
     return this._selection;
   }
 
-  //是否可展开
   public expandable = (_: number, node: any) =>
     node.children?.length;
 
-  //是否因子节点选中而被选中
   public selected = (node: any, indeterminate: boolean) => {
     if (this._tree.data) {
       const descendants = this._ctrl.getDescendants(node);
@@ -88,12 +86,13 @@ export class RoleMenuComponent {
       }
       return result;
     }
+    else {
+      return undefined;
+    }
   }
 
-  //选择节点
   public toggle = (node: any) => {
     this._selection.toggle(node.data.id);
-    //后代
     const descendants = this._ctrl.getDescendants(node);
     if (descendants.length) {
       if (this._selection.isSelected(node.data.id)) {
@@ -103,7 +102,6 @@ export class RoleMenuComponent {
         this._selection.deselect(...descendants.map(item => item.data.id));
       }
     }
-    //祖先
     let parent = node.parent;
     while (parent) {
       if (this._selection.isSelected(parent.data.id)) {
@@ -120,7 +118,6 @@ export class RoleMenuComponent {
     }
   }
 
-  //保存
   public save = async () => {
     const res = this._httpService.post(`roles/${this._id}/menu`, this._selection.selected).catch(async err => {
       switch (err.status) {

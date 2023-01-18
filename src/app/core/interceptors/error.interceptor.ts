@@ -33,7 +33,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               case 401:
                 // 直接注入 Router 会造成循环依赖，所以：
                 const router = this._injector.get(Router);
-                if (router.url != '/auth/login') {
+                if (router.url !== '/auth/login') {
                   this._dialogService.alert(this._translateService.instant('shared.notification.timeout')).then(() => {
                     delete this._status[401];
                     this._dialogService.close();
@@ -61,7 +61,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 break;
             }
           }
-          return throwError(err);
+          return throwError(() => err);
         })
       );
   }

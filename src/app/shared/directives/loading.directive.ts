@@ -1,25 +1,24 @@
-import { Directive, ElementRef, Input, ComponentFactoryResolver, ViewContainerRef, Renderer2, AfterViewInit } from '@angular/core';
-import { ThemePalette } from '@angular/material/core/common-behaviors/color';
-import { MatSpinner } from '@angular/material/progress-spinner';
+import { Directive, AfterViewInit, ElementRef, ViewContainerRef, Renderer2, Input } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Directive({
   selector: '[loading]'
 })
 export class LoadingDirective implements AfterViewInit {
 
-  private _wrapper: any;
   private _overlay: any;
-  private _spinner: MatSpinner;
-  private _value: boolean;
+  private _spinner: MatProgressSpinner;
+  private _wrapper: any;
+  private _value: boolean = false;
 
   constructor(
     private _elementRef: ElementRef,
-    private _componentFactoryResolver: ComponentFactoryResolver,
     private _viewContainerRef: ViewContainerRef,
     private _renderer: Renderer2
   ) {
-    const factory = this._componentFactoryResolver.resolveComponentFactory(MatSpinner);
-    this._spinner = this._viewContainerRef.createComponent(factory).injector.get(MatSpinner);
+    this._spinner = this._viewContainerRef.createComponent(MatProgressSpinner).instance;
+    this._spinner.mode = 'indeterminate';
     switch (this._elementRef.nativeElement.tagName) {
       case 'BUTTON': {
         this._spinner.diameter = 20;
@@ -31,16 +30,18 @@ export class LoadingDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     switch (this._elementRef.nativeElement.tagName) {
       case 'BUTTON': {
-        this._wrapper = this._elementRef.nativeElement.querySelector('.mat-button-wrapper');
-        if (this._value) {
-          this._renderer.setStyle(this._wrapper, 'height', '0');
-          this._renderer.setStyle(this._wrapper, 'display', 'block');
-          this._renderer.setStyle(this._wrapper, 'overflow', 'hidden');
-        }
+        this._wrapper = this._elementRef.nativeElement.querySelector('.mdc-button__label');
         this._overlay = this._renderer.createElement('span');
         this._renderer.appendChild(this._elementRef.nativeElement, this._overlay);
         this._renderer.appendChild(this._overlay, this._spinner._elementRef.nativeElement);
-        this._renderer.addClass(this._overlay, 'mat-button-wrapper');
+        this._renderer.addClass(this._overlay, 'mdc-button__label');
+        if (this._value) {
+          this._renderer.setStyle(this._wrapper, 'display', 'none');
+          this._renderer.setStyle(this._overlay, 'display', 'flex');
+        }
+        else {
+          this._renderer.setStyle(this._overlay, 'display', 'none');
+        }
         break;
       }
       default: {
@@ -68,20 +69,12 @@ export class LoadingDirective implements AfterViewInit {
     switch (this._elementRef.nativeElement.tagName) {
       case 'BUTTON': {
         if (value) {
-          if (this._wrapper) {
-            this._renderer.setStyle(this._wrapper, 'height', '0');
-            this._renderer.setStyle(this._wrapper, 'display', 'block');
-            this._renderer.setStyle(this._wrapper, 'overflow', 'hidden');
-          }
-          this._renderer.setStyle(this._spinner._elementRef.nativeElement, 'display', 'inline-block');
+          this._wrapper && this._renderer.setStyle(this._wrapper, 'display', 'none');
+          this._overlay && this._renderer.setStyle(this._overlay, 'display', 'flex');
         }
         else {
-          this._renderer.setStyle(this._spinner._elementRef.nativeElement, 'display', 'none');
-          if (this._wrapper) {
-            this._renderer.removeStyle(this._wrapper, 'height');
-            this._renderer.removeStyle(this._wrapper, 'display');
-            this._renderer.removeStyle(this._wrapper, 'overflow');
-          }
+          this._wrapper && this._renderer.removeStyle(this._wrapper, 'display');
+          this._overlay && this._renderer.setStyle(this._overlay, 'display', 'none');
         }
         break;
       }

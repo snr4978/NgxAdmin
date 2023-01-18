@@ -1,133 +1,81 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { SelectionModel } from '@angular/cdk/collections';
+import { AfterViewInit, Component, TemplateRef, ViewChild } from '@angular/core';
 import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
 import { I18nService } from '@app/core/services/i18n.service';
 import { ToastService } from '@app/core/services/toast.service';
-import { TableColumnDefinition } from '@app/shared/components/table-column-pattern/table-column-pattern.component';
-import { UserEditComponent } from './edit/edit.component';
+import { CrudComponent } from '@app/layouts/crud/crud.component';
 
 @Component({
   selector: 'app-admin-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
+  queries: {
+    _crud: new ViewChild('$crud'),
+    _role: new ViewChild('$role')
+  }
 })
-export class UserComponent {
+export class UserComponent implements AfterViewInit {
+
+  private _crud!: CrudComponent;
+  private _role!: TemplateRef<any>;
+  private _defination: any;
 
   constructor(
-    private _formBuilder: FormBuilder,
     private _dialogService: DialogService,
     private _httpService: HttpService,
     private _i18nService: I18nService,
     private _toastService: ToastService
-  ) {
-    this.refresh();
-    this._httpService.get('roles').then((res: any) => this.roles = res.items);
+  ) { }
+
+  async ngAfterViewInit(): Promise<void> {
+    const res: any = await this._httpService.get('roles');
+    this._defination = [{
+      id: 'name',
+      header: 'routes.admin.user.name',
+      filter: { field: 'text' },
+      editor: { field: 'text', required: true }
+    }, {
+      id: 'account',
+      header: 'routes.admin.user.account',
+      filter: { field: 'text' },
+      editor: { field: 'text', required: true }
+    }, {
+      id: 'role',
+      header: 'routes.admin.user.role',
+      template: this._role,
+      sortable: false,
+      filter: { field: 'select', range: res.items },
+      editor: { field: 'multi-select', range: res.items, convertor: (val: any) => val.map((i: any) => i.id) }
+    }];
   }
 
-  public loading: boolean = true;
-  public columns = new TableColumnDefinition<any>([
-    { id: 'selection', sticky: 'start' },
-    { id: 'name', header: 'routes.admin.user.name' },
-    { id: 'account', header: 'routes.admin.user.account' },
-    { id: 'role', header: 'routes.admin.user.role' },
-    { id: 'operation', sticky: 'end' }
-  ]);
-  public rows: any[];
-  public total: number = 0;
-  public selection = new SelectionModel<any>(true, []);
-  public sort: string = '';
-  public pageIndex: number = 0;
-  public pageSize: number = 30;
-  public filter: {
-    query: string,
-    form: FormGroup
-  } = {
-      query: '',
-      form: this._formBuilder.group({
-        name: '',
-        account: '',
-        role: ''
-      })
-    };
-  public roles: any[];
+  public get defination() {
+    return this._defination;
+  }
 
-  public async refresh(e?: any): Promise<void> {
-    if (e) {
-      if (e.pageIndex !== undefined) {
-        this.pageIndex = e.pageIndex;
-        this.pageSize = e.pageSize;
-      }
-      else if (e.active !== undefined) {
-        this.sort = e.direction ?
-          e.direction == 'desc' ? `~${e.active}` : e.active :
-          '';
-      }
-    }
-    let res: any = null;
-    let lastPage: number = -1;
-    while (this.pageIndex > lastPage) {
-      lastPage > -1 && (this.pageIndex = lastPage);
-      res = await this._httpService.get(`users?${this.filter.query}sort=${this.sort}&offset=${this.pageSize * this.pageIndex}&limit=${this.pageSize}`);
-      lastPage = res ? Math.max(0, Math.ceil(res.total / this.pageSize) - 1) : Number.MAX_VALUE;
-    }
-    if (res) {
-      this.loading = false;
-      this.total = res.total;
-      this.rows = res.items;
-      this.selection.clear();
+  public error = (e: any) => {
+    switch (e.status) {
+      case 409:
+        this._toastService.show(this._i18nService.translate(`routes.admin.user.error.conflict.${e.error?.propertyName?.toLowerCase()}`));
+        return false;
+      case 410:
+        this._toastService.show(this._i18nService.translate(`routes.admin.user.error.gone.${e.error?.propertyName?.toLowerCase()}`));
+        return true;
+      case 422:
+        this._toastService.show(this._i18nService.translate('shared.notification.fail'));
+        return true;
+      default:
+        return true;
     }
   }
 
-  public search() {
-    let query: string = '';
-    for (const key in this.filter.form.controls) {
-      const value = this.filter.form.controls[key].value.toString();
-      if (value.length) {
-        query += `${key}=${value}&`;
-      }
-    }
-    this.filter.query = query;
-    this.pageIndex = 0;
-    this.refresh();
-  }
-
-  public reset() {
-    for (const key in this.filter.form.controls) {
-      this.filter.form.controls[key].reset('');
-    }
-    this.filter.query = '';
-    this.pageIndex = 0;
-    this.refresh();
-  }
-
-  public async edit(item?: any): Promise<void> {
-    if (await this._dialogService.open(UserEditComponent, { data: item })) {
-      this.refresh();
-    }
-  }
-
-  public async delete(): Promise<void> {
-    if (await this._dialogService.confirm(this._i18nService.translate('shared.notification.confirm'))) {
-      const res: boolean = await this._httpService.post('users/batch', {
-        method: 'delete',
-        data: this.selection.selected.map(i => i.id)
-      }) !== undefined;
-      if (res) {
-        this._toastService.show(this._i18nService.translate('shared.notification.success'));
-        this.refresh();
-      }
-    }
-  }
-
-  public async password(id: number): Promise<void> {
+  public password = async (id: number) => {
     if (await this._dialogService.confirm(this._i18nService.translate('shared.notification.confirm'))) {
       const res = this._httpService.delete(`users/${id}/password`).catch(async err => {
         switch (err.status) {
           case 410:
             this._toastService.show(this._i18nService.translate(`routes.admin.user.error.gone.${err.error?.propertyName?.toLowerCase()}`));
-            this.refresh();
+            this._crud.refresh();
             break;
           case 422:
             this._toastService.show(this._i18nService.translate('shared.notification.fail'));

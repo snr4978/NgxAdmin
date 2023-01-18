@@ -1,4 +1,5 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface ThemeItem {
   theme: string,
@@ -39,10 +40,17 @@ export const themeItems: ThemeItem[] = [
 })
 export class ThemeService {
 
+  private _subject: BehaviorSubject<string>;
+  private _observable: Observable<string>;
   private _current: string;
 
   constructor() {
-    this.onchange.emit(this._current = localStorage.getItem('theme') || 'default');
+    this._subject = new BehaviorSubject<string>(this._current = localStorage.getItem('theme') || 'default');
+    this._observable = this._subject.asObservable();
+  }
+
+  public get onchange(): Observable<string> {
+    return this._observable;
   }
 
   public get items(): any[] {
@@ -55,8 +63,6 @@ export class ThemeService {
 
   public set current(value: string) {
     localStorage.setItem('theme', value);
-    this.onchange.emit(this._current = value);
+    this._subject.next(this._current = value);
   }
-
-  public onchange: EventEmitter<string> = new EventEmitter();
 }

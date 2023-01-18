@@ -5,7 +5,7 @@ import { ThemeService } from '@app/core/services/theme.service';
 
 @Component({
   selector: 'body',
-  template: '<router-outlet></router-outlet>',
+  template: '<router-outlet></router-outlet>'
 })
 export class AppComponent {
 

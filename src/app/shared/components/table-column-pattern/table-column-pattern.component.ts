@@ -8,21 +8,21 @@ import { Component, Input } from '@angular/core';
 })
 export class TableColumnPatternComponent {
 
-  private _columns: TableColumnDefinition<any>;
+  private _columns: TableColumnDefinition<any> | undefined;
 
   @Input()
-  public set columns(value: TableColumnDefinition<any>) {
+  public set columns(value: TableColumnDefinition<any> | undefined) {
     (this._columns = value)?.forEach(item => item.display ??= true);
   }
 
-  public get columns(): TableColumnDefinition<any> {
+  public get columns(): TableColumnDefinition<any> | undefined {
     return this._columns;
   }
 
-  public sticky = (index: number): boolean => !this._columns[index].sticky && this._columns[index].header;
+  public sticky = (index: number): boolean => this._columns && !this._columns[index].sticky && this._columns[index].header;
 
   public drop(e: CdkDragDrop<any[]>): void {
-    moveItemInArray(this._columns, e.previousIndex, e.currentIndex);
+    moveItemInArray(this._columns!, e.previousIndex, e.currentIndex);
   }
 }
 

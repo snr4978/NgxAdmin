@@ -20,9 +20,10 @@ export class DynamicReuseStrategy implements RouteReuseStrategy {
   }
 
   key(route: ActivatedRouteSnapshot): { url: string, type: string } {
+    const snapshot: any = route;
     return {
-      url: route['_routerState'].url,
-      type: (route.routeConfig.loadChildren || route.routeConfig.component)['name']
+      url: snapshot._routerState.url,
+      type: (snapshot.routeConfig.loadChildren || snapshot.routeConfig.component).name
     };
   }
 
@@ -31,7 +32,7 @@ export class DynamicReuseStrategy implements RouteReuseStrategy {
   }
 
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-    const componentRef = handle && handle['componentRef'] as ComponentRef<any>;
+    const componentRef = (<any>handle)?.componentRef as ComponentRef<any>;
     if (componentRef) {
       const key = this.key(route);
       delete this._cache[`${key.url}&${key.type}`];

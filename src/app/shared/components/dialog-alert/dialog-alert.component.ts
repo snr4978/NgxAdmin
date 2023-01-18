@@ -13,11 +13,11 @@ export class DialogAlertComponent {
     private _data: any
   ) { }
 
-  public get content(): string {
+  public get content(): string | undefined {
     return this._data.content;
   }
 
-  public get title(): string {
+  public get title(): string | undefined {
     return this._data.title;
   }
 }

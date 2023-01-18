@@ -8,7 +8,7 @@ import { MediaService } from '@app/core/services/media.service';
 })
 export class ToastService {
 
-  private _horizontalPosition: MatSnackBarHorizontalPosition;
+  private _horizontalPosition: MatSnackBarHorizontalPosition | undefined;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -31,8 +31,8 @@ export class ToastService {
       duration: 3000,
       horizontalPosition: this._horizontalPosition
     };
-    if (typeof message == 'string') {
-      return this._snackBar.open(message, null, config);
+    if (typeof message === 'string') {
+      return this._snackBar.open(message, undefined, config);
     }
     else {
       return this._snackBar.openFromComponent(message, config);

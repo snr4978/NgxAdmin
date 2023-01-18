@@ -23,6 +23,7 @@
       "delete": "Delete",
       "deletes": "Delete selected item(s)",
       "filter": "Filter",
+      "dyeing": "Dyeing",
       "reset": "Reset",
       "reload": "Reload",
       "forward": "Forward",
@@ -88,7 +89,7 @@
         }
       }
     },
-    "admin": {
+    "root": {
       "fixed": "Fix menu",
       "folded": "Fold menu",
       "fullscreen": "Fullscreen",

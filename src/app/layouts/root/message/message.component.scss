@@ -1,0 +1,20 @@
+.mat-mdc-tab-group {
+  height: 100%;
+
+  ::ng-deep {
+    .mat-mdc-tab-header {
+      display: none;
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      height: 100%;
+
+      .mat-mdc-tab-body-content {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        overflow: hidden;
+      }
+    }
+  }
+}

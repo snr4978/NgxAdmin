@@ -13,7 +13,7 @@ export class SignalrService {
       const token = localStorage.getItem('token');
       if (token) {
         const connection: signalr.HubConnection = new signalr.HubConnectionBuilder()
-          .withUrl(typeof hub == 'string' ?
+          .withUrl(typeof hub === 'string' ?
             `${hubs['default']}/signalr/${hub}` :
             `${hubs[hub[0]]}/${hub[1]}`, {
             accessTokenFactory: () => token

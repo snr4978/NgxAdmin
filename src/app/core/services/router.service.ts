@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, Navigation } from '@angular/router';
+import { Router, Navigation, NavigationStart, NavigationCancel, NavigationError, NavigationEnd } from '@angular/router';
 import { DynamicReuseStrategy } from '@app/core/strategies/dynamic.strategy';
+import { BehaviorSubject, combineLatest, delay, EMPTY, filter, finalize, map, Observable, of, Subject, Subscription, switchMap, takeUntil, tap, timer } from 'rxjs';
 
 export interface RouterItem {
   id: number;
@@ -24,20 +25,83 @@ export class RouterService {
   private _items: { [key: number]: RouterItem; } = {};
   private _path: { [key: string]: number[]; } = {};
   private _active: number[] = [];
+  private _starting: Subject<string> = new Subject<string>();
+  private _executing: Subject<boolean> = new Subject<boolean>();
+  private _progressing: BehaviorSubject<{ flag: boolean, value: number }> = new BehaviorSubject<{ flag: boolean, value: number }>({ flag: false, value: 0 });
+  private _onprogress: Observable<{ flag: boolean, value: number, url: string }> = combineLatest([this._starting, this._progressing]).pipe(map(r => ({ ...r[1], ...{ url: r[0] } })));
 
   constructor(
     private _router: Router
   ) {
-    _router.events.subscribe(result => {
-      if (result instanceof NavigationEnd) {
-        this._active.forEach(i => this._items[i].active = false);
-        this._active.length = 0;
-        this._path[result.url]?.forEach(i => {
-          this._items[i].active = true;
-          this._active.push(i);
-        });
+    this._executing.pipe(
+      switchMap(b => {
+        if (b) {
+          if (!this._progressing.value.flag) {
+            this._progressing.next({ flag: true, value: 10 });
+          }
+          return timer(0, 300).pipe(
+            tap(() => {
+              let value = this._progressing.value.value;
+              if (value >= 0 && value < 20) {
+                value += 10;
+              }
+              else if (value >= 20 && value < 50) {
+                value += 4;
+              }
+              else if (value >= 50 && value < 80) {
+                value += 2;
+              }
+              else if (value >= 80 && value < 99) {
+                value += 0.5;
+              }
+              else {
+                value += 0;
+              }
+              this._progressing.next({ flag: true, value: value });
+            })
+          );
+        }
+        else {
+          return !this._progressing.value.flag ? EMPTY : of({}).pipe(
+            tap(() => this._progressing.next({ flag: true, value: 100 })),
+            delay(350),
+            tap(() => this._progressing.next({ flag: false, value: 100 })),
+            delay(200),
+            finalize(() => this._progressing.next({ flag: false, value: 0 })),
+            takeUntil(this._starting)
+          );
+        }
+      })
+    ).subscribe();
+    this._router.events.pipe(
+      filter(e =>
+        e instanceof NavigationStart ||
+        e instanceof NavigationCancel ||
+        e instanceof NavigationError ||
+        e instanceof NavigationEnd)
+    ).subscribe(e => {
+      if (e instanceof NavigationStart) {
+        if (e.url.split('?')[0] !== this._router.url.split('?')[0]) {
+          this._starting.next(e.url);
+          this._executing.next(true);
+        }
+      }
+      else {
+        setTimeout(() => this._executing.next(false));
+        if (e instanceof NavigationEnd) {
+          this._active.forEach(i => this._items[i].active = false);
+          this._active.length = 0;
+          this._path[e.url]?.forEach(i => {
+            this._items[i].active = true;
+            this._active.push(i);
+          });
+        }
       }
     });
+  }
+
+  public get onprogress() {
+    return this._onprogress;
   }
 
   public init(items: RouterItem[]): RouterItem[] {
@@ -47,7 +111,7 @@ export class RouterService {
         this._root.push(item);
       }
     });
-    const tree = [];
+    const tree: RouterItem[] = [];
     const path = (url: string, item: RouterItem) => {
       this._path[url].unshift(item.id);
       if (this._items[item.parent]) {
@@ -55,7 +119,7 @@ export class RouterService {
       }
     };
     items.forEach(item => {
-      if (item.parent == 0) {
+      if (item.parent === 0) {
         tree.push(item);
       }
       else {
@@ -83,7 +147,7 @@ export class RouterService {
     level(tree, 0);
     const height = (ancestor: RouterItem, descendant: RouterItem) => {
       descendant.children?.forEach(child => {
-        ancestor.height += 48;
+        ancestor.height! += 48;
         height(ancestor, child);
       });
     };
@@ -101,29 +165,29 @@ export class RouterService {
   public focus(item: RouterItem): void {
     if (item.focus) {
       item.focus = false;
-      item.children.forEach(child => child.focus = false);
+      item.children?.forEach(child => child.focus = false);
     }
     else {
       const children = (item: RouterItem[]) => {
-        item.forEach(child => {
+        item?.forEach(child => {
           child.focus = false;
           if (child.children) {
             children(child.children);
           }
         });
       };
-      children(this._items[item.parent] ? this._items[item.parent].children : this._root);
+      children(this._items[item.parent] ? this._items[item.parent].children! : this._root);
       item.focus = true;
     }
   }
 
-  public current(): Navigation {
+  public current(): Navigation | null {
     return this._router.getCurrentNavigation();
   }
 
   public navigate(url: string | any[], params?: { [key: string]: any }): Promise<boolean> {
     return this._router.navigate(
-      typeof url == 'string' ? [url] : url,
+      typeof url === 'string' ? [url] : url,
       params ? { queryParams: params } : undefined
     );
   }
@@ -133,8 +197,8 @@ export class RouterService {
       return new Promise(resolve => setTimeout(() => this.reuse(url, value).then(resolve)));
     }
     else {
-      let urlTree = this._router.createUrlTree(typeof url == 'string' ? [url] : url);
-      urlTree = this._router.urlHandlingStrategy.merge(urlTree, this._router['rawUrlTree']);
+      let urlTree = this._router.createUrlTree(typeof url === 'string' ? [url] : url);
+      urlTree = this._router.urlHandlingStrategy.merge(urlTree, (<any>this._router).rawUrlTree);
       const strategy = this._router.routeReuseStrategy as DynamicReuseStrategy;
       if (value) {
         strategy.addUrl(urlTree.toString());

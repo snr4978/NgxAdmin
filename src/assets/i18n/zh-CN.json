@@ -23,6 +23,7 @@
       "delete": "删除",
       "deletes": "删除选中项",
       "filter": "筛选",
+      "dyeing": "着色",
       "reset": "重置",
       "reload": "重新加载",
       "forward": "前进",
@@ -88,7 +89,7 @@
         }
       }
     },
-    "admin": {
+    "root": {
       "fixed": "固定菜单",
       "folded": "折叠菜单",
       "fullscreen": "全屏",

@@ -1,0 +1,142 @@
+$theme-dark-primary:mat.define-palette(mat.$blue-palette, 200);
+$theme-dark-accent:mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$theme-dark-warn:mat.define-palette(mat.$deep-orange-palette);
+
+$theme-dark: mat.define-dark-theme((
+  color: (
+    primary: $theme-dark-primary,
+    accent: $theme-dark-accent,
+    warn:$theme-dark-warn 
+  )
+));
+
+.theme-dark {
+  @include mat.all-component-colors($theme-dark);
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track-piece {
+    background-color: mat.get-color-from-palette(mat.$grey-palette, 700);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: mat.get-color-from-palette(mat.$grey-palette, 500);
+
+    &:hover {
+      background-color: mat.get-color-from-palette(mat.$grey-palette, 400);
+    }
+  }
+
+  .app-background {
+    background-color: mat.get-color-from-palette(map-get($theme-dark, background), background) !important;
+  }
+
+  .app-background-card {
+    background-color: mat.get-color-from-palette(map-get($theme-dark, background), card) !important;
+  }
+
+  .app-background-focus {
+    background-color: mat.get-color-from-palette(map-get($theme-dark, background), hover) !important;
+  }
+
+  .app-background-primary {
+    background-color: mat.get-color-from-palette($theme-dark-primary) !important;
+  }
+
+  .app-background-primary-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-dark-primary), mat.get-color-from-palette(map-get($theme-dark, background), card), 12%);
+  }
+
+  .app-background-accent {
+    background-color: mat.get-color-from-palette($theme-dark-accent) !important;
+  }
+
+  .app-background-accent-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-dark-accent), mat.get-color-from-palette(map-get($theme-dark, background), card), 12%);
+  }
+
+  .app-background-warn {
+    background-color: mat.get-color-from-palette($theme-dark-warn) !important;
+  }
+
+  .app-background-warn-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-dark-warn), mat.get-color-from-palette(map-get($theme-dark, background), card), 12%);
+  }
+
+  .app-foreground {
+    color: mat.get-color-from-palette(map-get($theme-dark, foreground), text) !important;
+  }
+
+  .app-foreground-primary {
+    color: mat.get-color-from-palette($theme-dark-primary) !important;
+  }
+
+  .app-foreground-secondary {
+    color: mat.get-color-from-palette(map-get($theme-dark, foreground), secondary-text) !important;
+  }
+
+  .app-foreground-accent {
+    color: mat.get-color-from-palette($theme-dark-accent) !important;
+  }
+
+  .app-foreground-warn {
+    color: mat.get-color-from-palette($theme-dark-warn) !important;
+  }
+
+  .app-foreground-disabled {
+    color: mat.get-color-from-palette(map-get($theme-dark, foreground), disabled-text) !important;
+  }
+
+  .app-layout {
+    @extend .mat-app-background;
+
+    .app-sidenav-container {
+      .app-sidenav:not(.mat-drawer-end) {
+        border-right-width: 0;
+
+        .app-header {
+          border-bottom-color: mat.get-color-from-palette(mat.$grey-palette, 900);
+        }
+
+        .app-body {
+          .app-menu {
+            .app-menu-item {
+
+              &:hover,
+              &.focus {
+                background-color: rgba($color: mat.get-color-from-palette(mat.$grey-palette, 700), $alpha: .3)
+              }
+
+              &>a {
+                color: mat.get-color-from-palette(mat.$grey-palette, 400);
+              }
+
+              &.active>a {
+                color: mat.get-color-from-palette(mat.$blue-palette, 200);
+              }
+            }
+          }
+        }
+      }
+
+      .app-sidenav-content {
+        .app-header {
+          border-bottom-color: mat.get-color-from-palette(mat.$grey-palette, 900);
+        }
+
+        .app-body {
+          .ng-bar {
+            background-color: mat.get-color-from-palette($theme-dark-primary);
+          }
+        }
+      }
+    }
+  }
+  
+  .mat-mdc-row:hover {
+    background-color: mix(#fff, mat.get-color-from-palette(map-get($theme-dark, background), card), 4%) !important;
+  }
+
+  .mat-form-field-appearance-fill>.mat-mdc-text-field-wrapper {
+    background-color: transparent !important;
+  }
+}

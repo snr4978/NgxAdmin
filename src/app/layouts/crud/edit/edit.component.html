@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ (id ? 'shared.operation.edit' : 'shared.operation.add') | translate }}</h2>
+<div mat-dialog-content>
+  <form autocomplete="off" [formGroup]="form">
+    <ng-container *ngFor="let item of fields | sort: 'order'">
+      <ng-template [ngTemplateOutlet]="item.template" [ngTemplateOutletContext]="{ $implicit: form, form: form, field: item, data: data }" *ngIf="item.template;else $control"></ng-template>
+      <ng-template #$control [ngSwitch]="item.type">
+        <mat-form-field class="" *ngSwitchCase="'text'">
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <input matInput [formControlName]="item.id" [required]="item.required">
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'number'">
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <input type="number" matInput [formControlName]="item.id" [min]="item.range && item.range[0]" [max]="item.range && item.range[1]" [required]="item.required">
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'select'">
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <mat-select [formControlName]="item.id" [required]="item.required">
+            <mat-option *ngFor="let i of item.range" [value]="i.id">{{i.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'multi-select'">
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <mat-select [formControlName]="item.id" [required]="item.required" multiple>
+            <mat-option *ngFor="let i of item.range" [value]="i.id">{{i.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngSwitchCase="'date'">
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <input matInput readonly [formControlName]="item.id" [matDatepicker]="$picker">
+          <mat-datepicker-toggle matSuffix [for]="$picker"></mat-datepicker-toggle>
+          <mat-datepicker #$picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field *ngSwitchDefault>
+          <mat-label>{{ item.label | translate }}</mat-label>
+          <input matInput [formControlName]="item.id" [required]="item.required">
+        </mat-form-field>
+      </ng-template>
+    </ng-container>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>{{ 'shared.dialog.cancel' | translate | uppercase }}</button>
+  <button mat-button color="primary" [disabled]="form.invalid" (click)="save()">{{ 'shared.dialog.ok' | translate | uppercase }}</button>
+</div>

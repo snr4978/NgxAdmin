@@ -19,13 +19,15 @@
 }
 
 .cdk-drag-disabled {
-  height: 2px;
+  display: block;
   margin-top: -1px;
   margin-bottom: -1px;
+  height: 2px;
+  min-height: unset;
 }
 
 .mat-icon {
-  margin-left: -8px;
-  margin-right: 8px;
+  margin-left: -6px;
+  margin-right: -2px;
   cursor: move;
 }

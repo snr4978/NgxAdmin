@@ -4,12 +4,15 @@ import { AuthComponent } from './auth/auth.component';
 import { LoginComponent } from './auth/login/login.component';
 import { ExpireComponent } from './auth/expire/expire.component';
 import { InitialComponent } from './auth/initial/initial.component';
-import { AdminComponent } from './admin/admin.component';
-import { ProfileComponent } from './admin/profile/profile.component';
-import { PasswordComponent } from './admin/password/password.component';
-import { MessageComponent } from './admin/message/message.component';
-import { MessageListComponent } from './admin/message/list/list.component';
-import { MessageContentComponent } from './admin/message/content/content.component';
+import { RootComponent } from './root/root.component';
+import { ProfileComponent } from './root/profile/profile.component';
+import { PasswordComponent } from './root/password/password.component';
+import { MessageComponent } from './root/message/message.component';
+import { MessageListComponent } from './root/message/list/list.component';
+import { MessageContentComponent } from './root/message/content/content.component';
+import { CrudComponent } from './crud/crud.component';
+import { CrudEditComponent } from './crud/edit/edit.component';
+import { CrudFilterComponent } from './crud/filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -17,15 +20,21 @@ import { MessageContentComponent } from './admin/message/content/content.compone
     LoginComponent,
     ExpireComponent,
     InitialComponent,
-    AdminComponent,
+    RootComponent,
     ProfileComponent,
     PasswordComponent,
     MessageComponent,
     MessageListComponent,
-    MessageContentComponent
+    MessageContentComponent,
+    CrudComponent,
+    CrudEditComponent,
+    CrudFilterComponent
   ],
   imports: [
     SharedModule
+  ],
+  exports: [
+    CrudComponent
   ]
 })
 export class LayoutsModule { }

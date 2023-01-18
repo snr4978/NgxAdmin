@@ -45,7 +45,7 @@ export class SettingService {
           Object.assign(webApis, res[2]);
           Object.assign(hubs, res[2]);
           appSettings.htmlTitle && this._title.setTitle(this._i18nService.translate(appSettings.htmlTitle));
-          appSettings.appLogoAssets = /\./.test(appSettings.appLogo);
+          appSettings.appLogoAssets = !!appSettings.appLogo && /\./.test(appSettings.appLogo);
           resolve(null);
         }
       );

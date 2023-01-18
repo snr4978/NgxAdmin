@@ -1,0 +1,148 @@
+$theme-default-primary:mat.define-palette(mat.$blue-palette);
+$theme-default-accent:mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$theme-default-warn:mat.define-palette(mat.$red-palette);
+
+$theme-default: mat.define-light-theme((
+  color: (
+    primary: $theme-default-primary,
+    accent: $theme-default-accent,
+    warn:$theme-default-warn 
+  )
+));
+
+.theme-default {
+  @include mat.all-component-colors($theme-default);
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track-piece {
+    background-color: mat.get-color-from-palette(mat.$grey-palette, 200);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: mat.get-color-from-palette(mat.$grey-palette, 400);
+
+    &:hover {
+      background-color: mat.get-color-from-palette(mat.$grey-palette, 500);
+    }
+  }
+
+  .app-background {
+    background-color: mat.get-color-from-palette(map-get($theme-default, background), background) !important;
+  }
+
+  .app-background-card {
+    background-color: mat.get-color-from-palette(map-get($theme-default, background), card) !important;
+  }
+
+  .app-background-focus {
+    background-color: mat.get-color-from-palette(map-get($theme-default, background), hover) !important;
+  }
+
+  .app-background-primary {
+    background-color: mat.get-color-from-palette($theme-default-primary) !important;
+  }
+
+  .app-background-primary-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-default-primary), mat.get-color-from-palette(map-get($theme-default, background), card), 12%);
+  }
+
+  .app-background-accent {
+    background-color: mat.get-color-from-palette($theme-default-accent) !important;
+  }
+
+  .app-background-accent-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-default-accent), mat.get-color-from-palette(map-get($theme-default, background), card), 12%);
+  }
+
+  .app-background-warn {
+    background-color: mat.get-color-from-palette($theme-default-warn) !important;
+  }
+
+  .app-background-warn-lighter {
+    background-color: mix(mat.get-color-from-palette($theme-default-warn), mat.get-color-from-palette(map-get($theme-default, background), card), 12%);
+  }
+
+  .app-foreground {
+    color: mat.get-color-from-palette(map-get($theme-default, foreground), text) !important;
+  }
+
+  .app-foreground-primary {
+    color: mat.get-color-from-palette($theme-default-primary) !important;
+  }
+
+  .app-foreground-secondary {
+    color: mat.get-color-from-palette(map-get($theme-default, foreground), secondary-text) !important;
+  }
+
+  .app-foreground-accent {
+    color: mat.get-color-from-palette($theme-default-accent) !important;
+  }
+
+  .app-foreground-warn {
+    color: mat.get-color-from-palette($theme-default-warn) !important;
+  }
+
+  .app-foreground-disabled {
+    color: mat.get-color-from-palette(map-get($theme-default, foreground), disabled-text) !important;
+  }
+
+  .app-layout {
+    @extend .mat-app-background;
+
+
+    .app-sidenav-container {
+      .app-sidenav:not(.mat-drawer-end) {
+        border-right-width: 0;
+
+        .app-header {
+          background-color: mat.get-color-from-palette(mat.$blue-grey-palette, 900);
+          border-bottom-color: mat.get-color-from-palette(mat.$blue-grey-palette, 900);
+          color: mat.get-color-from-palette(mat.$grey-palette, A100);
+        }
+
+        .app-body {
+          background-color: mat.get-color-from-palette(mat.$blue-grey-palette, 900);
+
+          .app-menu {
+            .app-menu-item {
+
+              &:hover,
+              &.focus {
+                background-color: mat.get-color-from-palette(mat.$grey-palette, 900);
+              }
+
+              &>a {
+                color: mat.get-color-from-palette(mat.$grey-palette, 400);
+              }
+
+              &.active>a {
+                color: mat.get-color-from-palette(mat.$grey-palette, A100);
+              }
+            }
+          }
+        }
+      }
+
+      .app-sidenav-content {
+        .app-header {
+          background-color: mat.get-color-from-palette(mat.$grey-palette, A100);
+          border-bottom-color: mat.get-color-from-palette(mat.$grey-palette, 300);
+        }
+
+        .app-body {
+          .ng-bar {
+            background-color: mat.get-color-from-palette($theme-default-primary);
+          }
+        }
+      }
+    }
+  }
+  
+  .mat-mdc-row:hover {
+    background-color: mix(#000, mat.get-color-from-palette(map-get($theme-default, background), card), 4%) !important;
+  }
+
+  .mat-form-field-appearance-fill>.mat-mdc-text-field-wrapper {
+    background-color: transparent !important;
+  }
+}

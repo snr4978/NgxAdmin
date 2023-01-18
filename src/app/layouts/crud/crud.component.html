@@ -1,0 +1,85 @@
+<mat-sidenav-container hasBackdrop="true">
+  <mat-sidenav #$sidenav mode="over" position="end" autoFocus="false">
+    <app-crud-filter #$filter [fields]="filters" (changed)="$sidenav.close(); refresh($event)"></app-crud-filter>
+  </mat-sidenav>
+  <mat-sidenav-content [loading]="loading">
+    <div class="row-auto">
+      <mat-toolbar *ngIf="selection.hasValue();else $toolbar" class="app-background-primary-lighter">
+        <span class="text spacer app-foreground-primary">{{ 'shared.data.selected' | translate : { len : selection.selected.length } }}</span>
+        <ng-template *ngIf="toolbarSelectionTemplate" [ngTemplateOutlet]="toolbarSelectionTemplate" [ngTemplateOutletContext]="{ $implicit: selection.selected, selected: selection.selected }"></ng-template>
+        <button mat-icon-button *ngIf="deletable" matTooltip="{{ 'shared.operation.deletes' | translate }}" (click)="delete()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-toolbar>
+      <ng-template #$toolbar>
+        <mat-toolbar class="app-background-card">
+          <ng-template *ngIf="toolbarTemplate;else $buttons" [ngTemplateOutlet]="toolbarTemplate"></ng-template>
+          <ng-template #$buttons>
+            <button mat-button *ngIf="addable" color="primary" (click)="edit()">{{ 'shared.operation.add' | translate | uppercase }}</button>
+            <ng-template *ngIf="toolbarButtonsTemplate" [ngTemplateOutlet]="toolbarButtonsTemplate"></ng-template>
+            <button mat-button color="primary" (click)="refresh({ action: 'reload' })">{{ 'shared.operation.reload' | translate | uppercase }}</button>
+            <span class="spacer"></span>
+          </ng-template>
+          <ng-template *ngIf="toolbarIconsTemplate" [ngTemplateOutlet]="toolbarIconsTemplate"></ng-template>
+          <button mat-icon-button *ngIf="!fixed" matTooltip="{{ 'shared.operation.personalize' | translate }}" [matMenuTriggerFor]="$columns">
+            <mat-icon>flip</mat-icon>
+            <mat-menu #$columns>
+              <table-column-pattern [columns]="columns"></table-column-pattern>
+            </mat-menu>
+          </button>
+          <button mat-icon-button *ngIf="filters?.length" matTooltip="{{ 'shared.operation.filter' | translate }}" (click)="$sidenav.open()">
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </mat-toolbar>
+        <mat-divider></mat-divider>
+      </ng-template>
+    </div>
+    <div class="row-fill">
+      <table mat-table [multiTemplateDataRows]="!!rowExpandingTemplate" [dataSource]="rows" matSort (matSortChange)="refresh($event)">
+        <ng-container [matColumnDef]="item.id" [ngSwitch]="item.id" *ngFor="let item of columns" [sticky]="item.sticky=='start'" [stickyEnd]="item.sticky=='end'">
+          <ng-container *ngSwitchCase="'@selection'">
+            <th mat-header-cell *matHeaderCellDef>
+              <table-row-selection [model]="selection" [data]="rows" *ngIf="selectable=='multiple'"></table-row-selection>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <table-row-selection [model]="selection" [data]="row"></table-row-selection>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchCase="'@operation'">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <ng-template *ngIf="rowOperationTemplate" [ngTemplateOutlet]="rowOperationTemplate" [ngTemplateOutletContext]="{ $implicit: row, field: item, data: row }"></ng-template>
+              <button mat-icon-button *ngIf="editable" matTooltip="{{ 'shared.operation.edit' | translate }}" (click)="edit(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="item.style" [disabled]="item.sortable===false">{{ item.header | translate }}</th>
+            <td mat-cell *matCellDef="let row" [ngStyle]="item.style">
+              <ng-template *ngIf="item.template; else $text" [ngTemplateOutlet]="item.template" [ngTemplateOutletContext]="{ $implicit: row, field: item, data: row }"></ng-template>
+              <ng-template #$text>{{ item.convertor ? item.convertor(row[item.id]) : row[item.id] }}</ng-template>
+            </td>
+          </ng-container>
+        </ng-container>
+        <ng-container matColumnDef="@expanding">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="columns?.length">
+            <ng-template [ngTemplateOutlet]="rowExpandingTemplate" [ngTemplateOutletContext]="{ $implicit: row, data: row }"></ng-template>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns?.display; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns?.display;" [ngClass]="rowClass && rowClass(row)"></tr>
+        <ng-container *ngIf="rowExpandingTemplate">
+          <tr mat-row class="expanding" *matRowDef="let row; columns: ['@expanding']"></tr>
+        </ng-container>
+        <tr [hidden]="loading" *matNoDataRow>
+          <td [attr.colspan]="columns?.length">{{'shared.data.empty' | translate}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="row-auto" *ngIf="pageable">
+      <mat-divider></mat-divider>
+      <mat-paginator [length]="total" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="refresh($event)"></mat-paginator>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

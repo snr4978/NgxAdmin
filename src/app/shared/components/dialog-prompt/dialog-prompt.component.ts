@@ -13,11 +13,11 @@ export class DialogPromptComponent {
     private _data: any
   ) { }
 
-  public get text(): string {
+  public get text(): string | undefined {
     return this._data.content;
   }
 
-  public get title(): string {
+  public get title(): string | undefined {
     return this._data.title;
   }
 
@@ -26,18 +26,26 @@ export class DialogPromptComponent {
   }
 
   public get required(): boolean {
-    return this._data.required;
+    return this._data.required || false;
   }
 
-  public get range(): number[] | {} {
-    return this._data.range;
+  public get options(): {} | null {
+    return this._data.range || null;
   }
 
-  public get value(): string {
+  public get min(): number | null {
+    return (Array.isArray(this._data.range) && this._data.range[0]) || null;
+  }
+
+  public get max(): number | null {
+    return (Array.isArray(this._data.range) && this._data.range[1]) || null;
+  }
+
+  public get value(): string | null | undefined {
     return this._data.value;
   }
 
-  public set value(value: string) {
+  public set value(value: string | null | undefined) {
     this._data.value = value;
   }
 }

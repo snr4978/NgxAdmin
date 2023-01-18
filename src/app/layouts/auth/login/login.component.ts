@@ -16,9 +16,9 @@ import { RouterService } from '@app/core/services/router.service';
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
-  private _loading: boolean;
+  private _$form: ElementRef | undefined;
   private _form: FormGroup;
-  private _$form: ElementRef;
+  private _loading: boolean = false;
 
   constructor(
     private _renderer: Renderer2,
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this._$form.nativeElement.querySelectorAll('.mat-form-field-outline').forEach((item: any) => {
+    this._$form!.nativeElement.querySelectorAll('.mat-mdc-text-field-wrapper').forEach((item: any) => {
       this._renderer.addClass(item, 'app-background-card');
       this._renderer.setStyle(item, 'border-radius', '5px');
     });
@@ -48,32 +48,32 @@ export class LoginComponent implements OnInit, AfterViewInit {
   public get settings(): AppSettings {
     return appSettings;
   }
-  
+
   public get languages(): I18nItem[] {
     return this._i18nService.items;
   };
-
-  public get loading() {
-    return this._loading;
-  }
-
-  public get form() {
-    return this._form;
-  }
 
   public get language(): string {
     return this._i18nService.current;
   };
 
+  public get form() {
+    return this._form;
+  }
+
+  public get loading() {
+    return this._loading;
+  }
+
   public set language(value: string) {
     this._i18nService.current = value;
   };
-  
+
   public async login(): Promise<void> {
     this._loading = true;
     const res: any = await this._httpService.post('sessions', {
-      account: this._form.controls.account.value,
-      password: this._form.controls.password.value
+      account: this._form.controls['account'].value,
+      password: this._form.controls['password'].value
     }).catch(error => {
       this._loading = false;
       switch (error.status) {

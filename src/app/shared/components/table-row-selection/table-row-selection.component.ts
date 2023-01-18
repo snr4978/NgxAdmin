@@ -8,9 +8,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class TableRowSelectionComponent {
 
-  private _type: 'header' | 'row';
-  private _model: SelectionModel<any>;
-  private _data: any;
+  private _type: 'header' | 'row' | undefined;
+  private _model!: SelectionModel<any>;
+  private _data!: any;
 
   @Input()
   public set model(value: SelectionModel<any>) {
@@ -44,6 +44,8 @@ export class TableRowSelectionComponent {
         return this._model.hasValue();
       case 'row':
         return this._model.isSelected(this._data);
+      default:
+        return undefined;
     }
   }
 

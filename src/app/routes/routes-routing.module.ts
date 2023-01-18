@@ -3,9 +3,9 @@ import { Routes, RouterModule, RouteReuseStrategy } from '@angular/router';
 import { DynamicReuseStrategy } from '@app/core/strategies/dynamic.strategy';
 import { ActivateGuard } from '@app/core/guards/activate.guard';
 import { LayoutsModule } from '@app/layouts/layouts.module';
-import { AdminComponent } from '@app/layouts/admin/admin.component';
+import { RootComponent } from '@app/layouts/root/root.component';
 import { AuthComponent } from '@app/layouts/auth/auth.component';
-import { MessageComponent } from '@app/layouts/admin/message/message.component'
+import { MessageComponent } from '@app/layouts/root/message/message.component'
 import { LoginComponent } from '@app/layouts/auth/login/login.component';
 import { ExpireComponent } from '@app/layouts/auth/expire/expire.component';
 import { InitialComponent } from '@app/layouts/auth/initial/initial.component';
@@ -13,7 +13,7 @@ import { InitialComponent } from '@app/layouts/auth/initial/initial.component';
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,
+    component: RootComponent,
     canActivate: [ActivateGuard],
     canActivateChild: [ActivateGuard],
     children: [
@@ -53,7 +53,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     LayoutsModule,
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })
+    RouterModule.forRoot(routes)
   ],
   exports: [
     RouterModule

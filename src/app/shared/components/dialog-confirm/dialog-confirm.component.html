@@ -3,6 +3,6 @@
   <p [innerHTML]="content"></p>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{ 'shared.dialog.yes' | translate | uppercase }}</button>
   <button mat-button [mat-dialog-close]="false">{{ 'shared.dialog.no' | translate | uppercase }}</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{ 'shared.dialog.yes' | translate | uppercase }}</button>
 </div>
