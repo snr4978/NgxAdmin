@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Title } from '@angular/platform-browser';
+import { Title, DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from "@angular/material/icon";
 import { forkJoin } from 'rxjs';
 import { I18nService, i18nItems } from '@app/core/services/i18n.service';
 import { webApis } from '@app/core/services/http.service';
@@ -10,7 +11,7 @@ export interface AppSettings {
   appName?: string;
   appFullName?: string;
   appLogo?: string;
-  appLogoAssets?: boolean;
+  appLogoMode?: 'ico' | 'svg' | 'pic';
   appDescription?: string;
   appCopyright?: string;
   htmlTitle?: string;
@@ -25,8 +26,10 @@ export const appSettings: AppSettings = {};
 export class SettingService {
 
   constructor(
-    private _http: HttpClient,
+    private _httpClient: HttpClient,
     private _title: Title,
+    private _domSanitizer: DomSanitizer,
+    private _matIconRegistry: MatIconRegistry,
     private _i18nService: I18nService
   ) {
     this._i18nService.onchange.subscribe(() => appSettings.htmlTitle && this._title.setTitle(this._i18nService.translate(appSettings.htmlTitle)));
@@ -35,17 +38,30 @@ export class SettingService {
   public startup(): Promise<any> {
     return new Promise((resolve) => {
       forkJoin([
-        this._http.get(`assets/settings/app.json?timestamp=${Date.now()}`),
-        this._http.get(`assets/settings/i18n.json?timestamp=${Date.now()}`),
-        this._http.get(`assets/settings/srv.json?timestamp=${Date.now()}`)
+        this._httpClient.get(`assets/settings/app.json?timestamp=${Date.now()}`),
+        this._httpClient.get(`assets/settings/i18n.json?timestamp=${Date.now()}`),
+        this._httpClient.get(`assets/settings/srv.json?timestamp=${Date.now()}`)
       ]).subscribe(
         (res: any[]) => {
           Object.assign(appSettings, res[0]);
           Object.assign(i18nItems, res[1]);
           Object.assign(webApis, res[2]);
           Object.assign(hubs, res[2]);
-          appSettings.htmlTitle && this._title.setTitle(this._i18nService.translate(appSettings.htmlTitle));
-          appSettings.appLogoAssets = !!appSettings.appLogo && /\./.test(appSettings.appLogo);
+          if (appSettings.htmlTitle) {
+            this._title.setTitle(this._i18nService.translate(appSettings.htmlTitle));
+          }
+          if (appSettings.appLogo && appSettings.appLogo.includes('.')) {
+            if (appSettings.appLogo.endsWith('.svg')) {
+              this._matIconRegistry.addSvgIcon('app_logo', this._domSanitizer.bypassSecurityTrustResourceUrl(`/assets/images/${appSettings.appLogo}`));
+              appSettings.appLogoMode = 'svg';
+            }
+            else {
+              appSettings.appLogoMode = 'pic';
+            }
+          }
+          else {
+            appSettings.appLogoMode = 'ico';
+          }
           resolve(null);
         }
       );

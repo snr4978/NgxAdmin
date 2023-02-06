@@ -7,8 +7,11 @@
         <mat-toolbar class="app-header">
           <!--标志-->
           <div class="branding">
-            <img *ngIf="settings.appLogoAssets; else $logo" [src]="'assets/images/' + settings.appLogo">
-            <ng-template #$logo><mat-icon>{{ settings.appLogo }}</mat-icon></ng-template>
+            <ng-container class="branding" [ngSwitch]="settings.appLogoMode">
+              <mat-icon *ngSwitchCase="'ico'">{{ settings.appLogo }}</mat-icon>
+              <mat-icon *ngSwitchCase="'svg'" svgIcon="app_logo"></mat-icon>
+              <img *ngSwitchDefault [src]="'/assets/images/' + settings.appLogo">
+            </ng-container>
             <span>{{ settings.appName! | translate }}</span>
           </div>
           <div class="spacer"></div>

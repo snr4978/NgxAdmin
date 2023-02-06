@@ -2,7 +2,6 @@
   "appName": "Admin",
   "appFullName": "Kean Admin",
   "appLogo": "cloud",
-  "appLogoAssets": false,
   "appDescription": "基于 Angular Material 的管理系统模板 (version 15)",
   "appCopyright": "© 2023 snr4978@163.com",
   "htmlTitle": "Kean Admin"
