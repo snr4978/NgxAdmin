@@ -23,9 +23,12 @@ export class ActivateGuard implements CanActivate, CanActivateChild {
     else {
       // 请求服务，返回 Promise<boolean>
       return new Promise(resolve => {
-        this._httpService.get(`users/current/routes/${encodeURIComponent(state.url).toLowerCase()}`).then(
-          () => resolve(true),
-          () => resolve(false)
+        this._httpService.get(`users/current/routes/${encodeURIComponent(state.url).toLowerCase()}`).then(() => {
+          sessionStorage.setItem('loaded', 'true');
+          resolve(true);
+        }, () => {
+          resolve(false);
+        }
         );
       });
     }
