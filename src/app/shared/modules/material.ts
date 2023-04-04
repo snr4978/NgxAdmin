@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-
 import { A11yModule } from '@angular/cdk/a11y';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -17,8 +16,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
-import { DateAdapter, MatNativeDateModule, MatRippleModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule, MatDatepickerIntl } from '@angular/material/datepicker';
+import { DateAdapter, MatNativeDateModule, MatRippleModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -43,47 +43,33 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { NgxMatMomentAdapter, NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular-material-components/moment-adapter';
-import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
-// import { MatFileUploadModule } from 'angular-material-fileupload';
 
 @NgModule({
   providers: [{
+    provide: DateAdapter,
+    useClass: MomentDateAdapter
+  }, {
     provide: MAT_DATE_FORMATS,
     useValue: {
-      parse: {
-        dateInput: 'YYYY-MM-DD',
-      },
       display: {
         dateInput: 'YYYY-MM-DD',
+        datetimeInput: 'YYYY-MM-DD HH:mm',
         monthYearLabel: 'YYYY-MM',
         dateA11yLabel: 'YYYY-MM-DD',
         monthYearA11yLabel: 'YYYY-MM',
       }
     }
   }, {
-    provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-    useValue: {
-      useUtc: true
-    }
-  }, {
-    provide: NGX_MAT_DATE_FORMATS,
-    useValue: {
-      parse: {
-        dateInput: "YYYY-MM-DD HH:mm"
-      },
-      display: {
-        dateInput: "YYYY-MM-DD HH:mm",
-        monthYearLabel: 'YYYY-MM',
-        dateA11yLabel: 'YYYY-MM-DD',
-        monthYearA11yLabel: 'YYYY-MM',
-      }
-    }
-  }, {
-    provide: NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-    useValue: {
-      useUtc: true
+    provide: MatDatepickerIntl,
+    deps: [DateAdapter, TranslateService],
+    useFactory: (dateApapter: MomentDateAdapter, translateService: TranslateService) => {
+      const matDatepickerIntl = new MatDatepickerIntl();
+      dateApapter.setLocale(translateService.currentLang);
+      translateService.onLangChange.subscribe(() => {
+        dateApapter.setLocale(translateService.currentLang);
+        matDatepickerIntl.changes.next();
+      });
+      return matDatepickerIntl;
     }
   }, {
     provide: MAT_CHECKBOX_DEFAULT_OPTIONS,
@@ -128,14 +114,6 @@ import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatNativeDateModule, 
       });
       return matPaginatorIntl;
     }
-  }, {
-    provide: DateAdapter,
-    useClass: MomentDateAdapter,
-    deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-  }, {
-    provide: NgxMatDateAdapter,
-    useClass: NgxMatMomentAdapter,
-    deps: [MAT_DATE_LOCALE, NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS]
   }],
   exports: [
     A11yModule,
@@ -159,7 +137,6 @@ import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatNativeDateModule, 
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
-    // MatFileUploadModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
@@ -181,10 +158,7 @@ import { NgxMatDateAdapter, NgxMatDatetimePickerModule, NgxMatNativeDateModule, 
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
-    NgxMatDatetimePickerModule,
-    NgxMatNativeDateModule,
-    NgxMatTimepickerModule
+    MatTreeModule
   ],
 })
 export class MaterialModule { }

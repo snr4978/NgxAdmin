@@ -1,0 +1,25 @@
+<div class="clock app-background" 
+  (touchstart)="ontouchstart()" (touchmove)="ontouchmove($event)" (touchend)="ontouchend($event)"
+  (mousedown)="onmousedown()" (mousemove)="onmousemove($event)" (mouseup)="onmouseup($event)">
+  <div class="pointer mat-calendar-body-selected" [class.small]="view === 'hour' && (scale === 0 || scale > 12)"
+    [style.transform]="'rotate(' + pointer + 'deg)'">
+    <div class="inner-dot"></div>
+    <div class="line">
+      <div class="outer-dot" [class.odd]="view === 'minute' && scale % 5 !== 0"></div>
+    </div>
+  </div>
+  <div class="dial hours" [class.active]="view === 'hour'">
+    <button *ngFor="let item of hours;" class="scale" [class.small]="item.value > 12"
+      [class.mat-calendar-body-selected]="scale === item.value || (item.value === 24 && scale === 0)"
+      [style.transform]="'translate(' + item.position.x + 'px, ' + item.position.y + 'px)'">
+      {{ item.value === 24 ? 0 : item.value }}
+    </button>
+  </div>
+  <div class="dial minutes" [class.active]="view === 'minute'">
+    <button *ngFor="let item of minutes;" class="scale"
+      [class.mat-calendar-body-selected]="scale === item.value || (item.value === 60 && scale === 0)"
+      [style.transform]="'translate(' + item.position.x + 'px, ' + item.position.y + 'px)'">
+      {{ item.value % 5 === 0 ? (item.value === 60 ? 0 : item.value) : '·' }}
+    </button>
+  </div>
+</div>

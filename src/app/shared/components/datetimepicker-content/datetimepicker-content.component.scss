@@ -1,0 +1,110 @@
+$calendar-padding: 8px;
+$non-touch-calendar-cell-size: 40px;
+$non-touch-calendar-width: $non-touch-calendar-cell-size * 7 + $calendar-padding * 2;
+$non-touch-calendar-height: 354px;
+$touch-landscape-width: 64vh;
+$touch-landscape-height: 80vh;
+$touch-portrait-width: 80vw;
+$touch-portrait-height: 100vw;
+$touch-portrait-height-with-actions: 115vw;
+$touch-min-width: 250px;
+$touch-min-height: 312px;
+$touch-max-width: 750px;
+$touch-max-height: 788px;
+
+.mat-datepicker-content {
+  display: block;
+  border-radius: 4px;
+
+  .mat-calendar {
+    width: $non-touch-calendar-width;
+    height: $non-touch-calendar-height;
+
+    .mat-calendar-previous-button,
+    .mat-calendar-next-button {
+      width: 40px;
+      height: 40px;
+      padding: 8px;
+    }
+
+    .mat-calendar-table-header {
+      line-height: 14px;
+    }
+  }
+
+  .mat-datepicker-content-container-with-custom-header .mat-calendar {
+    height: auto;
+  }
+
+  .clock {
+    display: flex;
+    width: $non-touch-calendar-width;
+    height: $non-touch-calendar-height;
+    flex-direction: column;
+    align-items: center;
+
+    :first-child {
+      flex: 0 0 none;
+      font-size: 42px;
+      line-height: 78px;
+    }
+
+    :last-child {
+      flex: 1 1 auto;
+    }
+  }
+
+  .mat-datepicker-close-button {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+
+    .ng-animating & {
+      display: none;
+    }
+  }
+}
+
+.mat-datepicker-content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mat-datepicker-content-touch {
+  display: block;
+  max-height: 80vh;
+  position: relative;
+  overflow: visible;
+
+  .mat-datepicker-content-container {
+    min-height: $touch-min-height;
+    max-height: $touch-max-height;
+    min-width: $touch-min-width;
+    max-width: $touch-max-width;
+  }
+
+  .mat-calendar {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media all and (orientation: landscape) {
+  .mat-datepicker-content-touch .mat-datepicker-content-container {
+    width: $touch-landscape-width;
+    height: $touch-landscape-height;
+  }
+}
+
+@media all and (orientation: portrait) {
+  .mat-datepicker-content-touch .mat-datepicker-content-container {
+    width: $touch-portrait-width;
+    height: $touch-portrait-height;
+  }
+
+  .mat-datepicker-content-touch .mat-datepicker-content-container-with-actions {
+    height: $touch-portrait-height-with-actions;
+  }
+}

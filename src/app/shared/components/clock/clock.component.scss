@@ -1,0 +1,101 @@
+.clock {
+  width: 256px;
+  height: 256px;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+
+  .dial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: 200ms;
+
+    &.hours {
+      transform: scale(1.2);
+    }
+
+    &.minutes {
+      transform: scale(0.8);
+    }
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    .scale {
+      display: flex;
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      left: calc(50% - 16px);
+      top: calc(50% - 16px);
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      border: 0px;
+      font-size: 14px;
+      line-height: 32px;
+      text-align: center;
+      pointer-events: none;
+      cursor: pointer;
+
+      &.small {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .pointer {
+    position: absolute;
+    width: calc(50% - 20px);
+    height: 2px;
+    left: 50%;
+    top: calc(50% - 1px);
+    transform-origin: left center;
+    pointer-events: none;
+
+    &.small {
+      width: calc(50% - 52px);
+    }
+
+    .line {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      height: 2px;
+      background-color: inherit;
+    }
+
+    .inner-dot {
+      position: absolute;
+      top: -3px;
+      left: -4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: inherit;
+    }
+
+    .outer-dot {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      right: -16px;
+      border-radius: 50%;
+      background-color: inherit;
+
+      &.odd {
+        width: 12px;
+        height: 12px;
+        right: -6px;
+      }
+    }
+  }
+}

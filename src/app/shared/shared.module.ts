@@ -5,6 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from './modules/material';
+import { ClockComponent } from './components/clock/clock.component';
+import { Datetimepicker } from './components/datetimepicker/datetimepicker.component';
+import { DatetimeRangePicker } from './components/datetime-range-picker/datetime-range-picker.component';
+import { DatetimepickerContent } from './components/datetimepicker-content/datetimepicker-content.component';
 import { DialogAlertComponent } from './components/dialog-alert/dialog-alert.component';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 import { DialogPromptComponent } from './components/dialog-prompt/dialog-prompt.component';
@@ -23,6 +27,10 @@ const MODULES = [
   TranslateModule
 ];
 const COMPONENTS = [
+  ClockComponent,
+  Datetimepicker,
+  DatetimeRangePicker,
+  DatetimepickerContent,
   DialogAlertComponent,
   DialogConfirmComponent,
   DialogPromptComponent,
