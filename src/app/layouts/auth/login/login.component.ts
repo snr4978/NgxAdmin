@@ -5,6 +5,7 @@ import { DialogService } from '@app/core/services/dialog.service';
 import { HttpService } from '@app/core/services/http.service';
 import { I18nService, I18nItem } from '@app/core/services/i18n.service';
 import { RouterService } from '@app/core/services/router.service';
+import { ThemeService } from '@app/core/services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -26,12 +27,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private _dialogService: DialogService,
     private _httpService: HttpService,
     private _i18nService: I18nService,
-    private _routerService: RouterService
+    private _routerService: RouterService,
+    private _themeService: ThemeService
   ) {
     this._form = this._formBuilder.group({
       account: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbg);
   }
 
   ngOnInit(): void {

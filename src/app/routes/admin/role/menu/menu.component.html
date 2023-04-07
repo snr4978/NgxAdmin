@@ -7,14 +7,14 @@
     <mat-tree [dataSource]="tree" [treeControl]="ctrl">
       <mat-tree-node *matTreeNodeDef="let node">
         <button mat-icon-button disabled></button>
-        <mat-checkbox [checked]="selection.isSelected(node.data.id)" (change)="toggle(node)">{{ node.data.header | translate }}</mat-checkbox>
+        <mat-checkbox [checked]="selection.isSelected(node.data.id)" [disabled]="node.data.disabled" (change)="toggle(node)">{{ node.data.name | translate }}</mat-checkbox>
       </mat-tree-node>
       <mat-nested-tree-node *matTreeNodeDef="let node; when: expandable">
-        <div>
+        <div class="mat-nested-tree-node-content">
           <button mat-icon-button matTreeNodeToggle>
             <mat-icon>{{ ctrl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
           </button>
-          <mat-checkbox [checked]="selected(node, false)" [indeterminate]="selected(node, true)" (change)="toggle(node)">{{ node.data.header | translate }}</mat-checkbox>
+          <mat-checkbox [checked]="selected(node, false)" [indeterminate]="selected(node, true)" (change)="toggle(node)">{{ node.data.name | translate }}</mat-checkbox>
         </div>
         <div class="mat-nested-tree-node-children" [@expand]="ctrl.isExpanded(node) ? 'expanded' : 'collapsed'">
           <ng-container matTreeNodeOutlet></ng-container>

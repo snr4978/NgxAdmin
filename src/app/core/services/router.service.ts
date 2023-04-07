@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, Navigation, NavigationStart, NavigationCancel, NavigationError, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationCancel, NavigationError, NavigationEnd } from '@angular/router';
 import { DynamicReuseStrategy } from '@app/core/strategies/dynamic.strategy';
-import { BehaviorSubject, combineLatest, delay, EMPTY, filter, finalize, map, Observable, of, Subject, Subscription, switchMap, takeUntil, tap, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, delay, EMPTY, filter, finalize, map, Observable, of, Subject, switchMap, takeUntil, tap, timer } from 'rxjs';
 
 export interface RouterItem {
   id: number;
@@ -25,6 +25,7 @@ export class RouterService {
   private _items: { [key: number]: RouterItem; } = {};
   private _path: { [key: string]: number[]; } = {};
   private _active: number[] = [];
+  private _permission: { [key: string]: boolean; } = {};
   private _starting: Subject<string> = new Subject<string>();
   private _executing: Subject<boolean> = new Subject<boolean>();
   private _progressing: BehaviorSubject<{ flag: boolean, value: number }> = new BehaviorSubject<{ flag: boolean, value: number }>({ flag: false, value: 0 });
@@ -104,6 +105,13 @@ export class RouterService {
     return this._onprogress;
   }
 
+  public get current() {
+    return {
+      navigation: this._router.getCurrentNavigation(),
+      permission: this._permission
+    }
+  }
+
   public init(items: RouterItem[]): RouterItem[] {
     items.forEach(item => {
       this._items[item.id] = item;
@@ -181,8 +189,8 @@ export class RouterService {
     }
   }
 
-  public current(): Navigation | null {
-    return this._router.getCurrentNavigation();
+  public permit(...items: string[]): void {
+    this._permission = items.reduce((obj: any, item: any) => { return obj[item] = true, obj }, {});
   }
 
   public navigate(url: string | any[], params?: { [key: string]: any }): Promise<boolean> {

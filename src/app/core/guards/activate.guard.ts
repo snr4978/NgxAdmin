@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpService } from '@app/core/services/http.service';
+import { RouterService } from '@app/core/services/router.service';
 import { RootComponent } from '@app/layouts/root/root.component';
 
 @Injectable({
@@ -10,7 +11,8 @@ import { RootComponent } from '@app/layouts/root/root.component';
 export class ActivateGuard implements CanActivate, CanActivateChild {
 
   constructor(
-    private _httpService: HttpService
+    private _httpService: HttpService,
+    private _routerService: RouterService
   ) { }
 
   canActivate(
@@ -23,8 +25,9 @@ export class ActivateGuard implements CanActivate, CanActivateChild {
     else {
       // 请求服务，返回 Promise<boolean>
       return new Promise(resolve => {
-        this._httpService.get(`users/current/routes/${encodeURIComponent(state.url).toLowerCase()}`).then(() => {
+        this._httpService.get(`users/current/routes/${encodeURIComponent(state.url).toLowerCase()}`).then((res: string[]) => {
           sessionStorage.setItem('loaded', 'true');
+          this._routerService.permit(...res);
           resolve(true);
         }, () => {
           resolve(false);

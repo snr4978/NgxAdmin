@@ -4,6 +4,11 @@
   justify-content: center;
 }
 
+.mat-nested-tree-node-content {
+  display: flex;
+  align-items: center;
+}
+
 .mat-nested-tree-node-children {
   padding-left: 24px;
   overflow: hidden;

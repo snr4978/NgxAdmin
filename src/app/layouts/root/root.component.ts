@@ -89,9 +89,16 @@ export class RootComponent implements OnDestroy {
       if (res) {
         this._account = res[0].name;
         this._avatar = res[0].avatar || appSettings.defaultAvatar;
-        this._menu = this._routerService.init(res[1]);
+        this._menu = this._routerService.init(res[1].map((item: any) => ({
+          id: item.id,
+          parent: item.parent,
+          header: item.name,
+          icon: item.icon,
+          url: item.parameter
+        })));
       }
     });
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbar);
   }
 
   ngOnDestroy(): void {
@@ -176,6 +183,7 @@ export class RootComponent implements OnDestroy {
 
   public set theme(value: string) {
     this._themeService.current = value;
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === value).cbar);
   }
 
   public set language(value: I18nItem) {

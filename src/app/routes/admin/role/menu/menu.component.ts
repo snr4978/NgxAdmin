@@ -79,8 +79,8 @@ export class RoleMenuComponent {
 
   public selected = (node: any, indeterminate: boolean) => {
     if (this._tree.data) {
-      const descendants = this._ctrl.getDescendants(node);
-      let result = descendants.some(item => this._selection.isSelected(item.data.id));
+      const descendants = this._ctrl.getDescendants(node).filter(item => item.data.type === 'Menu');
+      let result = this._selection.isSelected(node.data.id) || descendants.some(item => this._selection.isSelected(item.data.id));
       if (indeterminate) {
         result &&= !descendants.every(item => this._selection.isSelected(item.data.id));
       }
@@ -95,26 +95,30 @@ export class RoleMenuComponent {
     this._selection.toggle(node.data.id);
     const descendants = this._ctrl.getDescendants(node);
     if (descendants.length) {
-      if (this._selection.isSelected(node.data.id)) {
-        this._selection.select(...descendants.map(item => item.data.id));
+      const selected = this._selection.isSelected(node.data.id);
+      if (selected) {
+        this._selection.select(...descendants.filter(item => item.data.type === 'Menu').map(item => item.data.id));
       }
       else {
         this._selection.deselect(...descendants.map(item => item.data.id));
       }
+      descendants.forEach(item => item.data.type === 'UI' && (item.data.disabled = !selected));
     }
-    let parent = node.parent;
-    while (parent) {
-      if (this._selection.isSelected(parent.data.id)) {
-        if (!this.selected(parent, false)) {
-          this._selection.deselect(parent.data.id);
+    if (node.data.type === 'Menu') {
+      let parent = node.parent;
+      while (parent) {
+        if (this._selection.isSelected(parent.data.id)) {
+          if (!this.selected(parent, false)) {
+            this._selection.deselect(parent.data.id);
+          }
         }
-      }
-      else {
-        if (this.selected(parent, false)) {
-          this._selection.select(parent.data.id);
+        else {
+          if (this.selected(parent, false)) {
+            this._selection.select(parent.data.id);
+          }
         }
+        parent = parent.parent;
       }
-      parent = parent.parent;
     }
   }
 
