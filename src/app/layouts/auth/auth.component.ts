@@ -10,7 +10,9 @@ export class AuthComponent {
 
   constructor(
     private _themeService: ThemeService
-  ) { }
+  ) {
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbg);
+  }
 
   public get theme(): string {
     return this._themeService.current;

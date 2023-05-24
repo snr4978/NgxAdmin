@@ -14,6 +14,7 @@ export class AppComponent {
     private _mediaService: MediaService,
     private _themeService: ThemeService
   ) {
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbg);
     this._mediaService.onchange.subscribe((e: string) => this._class = `media-${this._media = e} theme-${this._theme}`);
     this._themeService.onchange.subscribe((e: string) => this._class = `theme-${this._theme = e} media-${this._media}`);
   }

@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       account: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
-    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbg);
   }
 
   ngOnInit(): void {

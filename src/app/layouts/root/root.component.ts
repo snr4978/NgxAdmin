@@ -56,6 +56,7 @@ export class RootComponent implements OnDestroy {
     private _themeService: ThemeService,
     private _toastService: ToastService
   ) {
+    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbar);
     this._account = '...';
     this._avatar = appSettings.defaultAvatar ??= 'data:image/jpeg;base64,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';
     this._menu = [];
@@ -98,7 +99,6 @@ export class RootComponent implements OnDestroy {
         })));
       }
     });
-    (<any>window).AndroidShell?.setStatusBarColor(this._themeService.items.find(item => item.theme === _themeService.current).cbar);
   }
 
   ngOnDestroy(): void {
