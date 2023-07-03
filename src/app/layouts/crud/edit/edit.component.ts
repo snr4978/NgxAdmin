@@ -28,7 +28,7 @@ export class CrudEditComponent {
       const value = [
         _data.data ?
           item.convertor ?
-            item.convertor(_data.data[item.id]) :
+            item.convertor(_data.data[item.id], 'r') :
             _data.data[item.id] :
           item.default
       ];
@@ -66,7 +66,9 @@ export class CrudEditComponent {
   public async save(): Promise<void> {
     const data: any = {};
     this._data.fields.forEach((item: any) => {
-      data[item.id] = this._form.controls[item.id].value;
+      data[item.id] = item.convertor ?
+        item.convertor(this._form.controls[item.id].value, 'w') :
+        this._form.controls[item.id].value;
     });
     const res: boolean = (this.id ?
       await this._httpService.put(`${this._data.api}/${this.id}`, data).catch(e => {

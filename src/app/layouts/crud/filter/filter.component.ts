@@ -32,7 +32,7 @@ export class CrudFilterComponent {
   public set fields(value: any[]) {
     if (value) {
       value.forEach((item: any) => {
-        if (item.type == 'date-range') {
+        if (item.type == 'date-range' || item.type == 'datetime-range') {
           const controlFrom = new FormControl();
           const controlTo = new FormControl();
           if (item.default) {
@@ -54,38 +54,42 @@ export class CrudFilterComponent {
     }
   }
 
+  public static queryString(field: any, value: any): string {
+    if (field.convertor) {
+      return field.convertor(value);
+    }
+    else {
+      switch (field.type) {
+        case 'multi-select':
+          return value instanceof Array ? value.map((id: any) => `${field.id}=${id}&`).join('') || `${field.id}=0&` : '';
+        case 'date':
+        case 'datetime':
+          return value?._isAMomentObject ? `${field.id}=${value.format(field.type == 'datetime' ? 'yyyy-MM-DD HH:mm' : 'yyyy-MM-DD')}&` : '';
+        case 'date-range':
+        case 'datetime-range':
+          const format = field.type == 'datetime-range' ? 'yyyy-MM-DD HH:mm' : 'yyyy-MM-DD'
+          let query = '';
+          if (value[0]?._isAMomentObject) {
+            query += `${field.id}From=${value[0].format(format)}&`;
+          }
+          if (value[1]?._isAMomentObject) {
+            query += `${field.id}To=${value[1].format(format)}&`;
+          }
+          return query;
+        default:
+          return value?.toString().length ? `${field.id}=${value}&` : '';
+      }
+    }
+  }
+
   public search(action?: string) {
     let query: string = '';
     this._fields?.forEach(item => {
-      if (item.convertor) {
-        query += item.convertor(this._form.controls[item.id].value);
+      if ((item.type === 'date-range' || item.type === 'datetime-range') && !item.convertor) {
+        query += CrudFilterComponent.queryString(item, [this._form.controls[`${item.id}From`].value, this._form.controls[`${item.id}To`].value]);
       }
       else {
-        switch (item.type) {
-          case 'multi-select':
-            if (this._form.controls[item.id].value instanceof Array) {
-              query += this._form.controls[item.id].value.map((id: any) => `${item.id}=${id}&`).join('') || `${item.id}=0&`;
-            }
-            break;
-          case 'date':
-            if (this._form.controls[item.id].value?._isAMomentObject) {
-              query += `${item.id}=${this._form.controls[item.id].value.format('yyyy-MM-DD')}&`;
-            }
-            break;
-          case 'date-range':
-            if (this._form.controls[`${item.id}From`].value?._isAMomentObject) {
-              query += `${item.id}From=${this._form.controls[`${item.id}From`].value.format('yyyy-MM-DD')}&`;
-            }
-            if (this._form.controls[`${item.id}To`].value?._isAMomentObject) {
-              query += `${item.id}To=${this._form.controls[`${item.id}To`].value.format('yyyy-MM-DD')}&`;
-            }
-            break;
-          default:
-            if (this._form.controls[item.id].value?.toString().length) {
-              query += `${item.id}=${this._form.controls[item.id].value}&`;
-            }
-            break;
-        }
+        query += CrudFilterComponent.queryString(item, this._form.controls[item.id].value);
       }
     });
     this.changed.emit({
@@ -98,6 +102,7 @@ export class CrudFilterComponent {
     this._fields?.forEach(item => {
       switch (item.type) {
         case 'date-range':
+        case 'datetime-range':
           this._form.controls[`${item.id}From`].reset(item.default && item.default[0]);
           this._form.controls[`${item.id}To`].reset(item.default && item.default[1]);
           break;

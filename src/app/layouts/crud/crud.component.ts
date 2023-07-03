@@ -43,7 +43,7 @@ export class CrudComponent implements OnDestroy {
   private _convertor: ((e: any) => Promise<{ items: any[], total?: number }>) | undefined;
   private _error: ((e: any) => boolean) | undefined;
   private _filters: { id: string, type: string, label: string, order?: number, template?: TemplateRef<any>, range?: any[], convertor?: (val: any) => string, default?: any }[] = [];
-  private _editors: { id: string, type: string, label: string, order?: number, template?: TemplateRef<any>, range?: any[], convertor?: (val: any) => any, validator?: ValidatorFn[], required?: boolean, default?: any }[] = [];
+  private _editors: { id: string, type: string, label: string, order?: number, template?: TemplateRef<any>, range?: any[], convertor?: (val: any, io: 'r' | 'w') => any, validator?: ValidatorFn[], required?: boolean, default?: any }[] = [];
   private _loading: boolean = true;
   private _query: { static: string, dynamic: string } = { static: '', dynamic: '' };
   private _pageIndex: number = 0;
@@ -191,7 +191,7 @@ export class CrudComponent implements OnDestroy {
     sticky?: 'start' | 'end',
     display?: boolean,
     filter?: {
-      field: 'text' | 'number' | 'select' | 'multi-select' | 'date' | 'date-range',
+      field: 'text' | 'number' | 'select' | 'multi-select' | 'date' | 'date-range' | 'datetime' | 'datetime-range',
       order?: number,
       template?: TemplateRef<any>,
       range?: any[],
@@ -199,11 +199,11 @@ export class CrudComponent implements OnDestroy {
       default?: any
     },
     editor?: {
-      field: 'text' | 'number' | 'select' | 'multi-select' | 'date',
+      field: 'text' | 'number' | 'select' | 'multi-select' | 'date' | 'datetime',
       order?: number,
       template?: TemplateRef<any>,
       range?: any[],
-      convertor?: (val: any) => any,
+      convertor?: (val: any, io: 'r' | 'w') => any,
       validator?: ValidatorFn[],
       required?: boolean,
       default?: any
@@ -248,7 +248,7 @@ export class CrudComponent implements OnDestroy {
     this._editors = [];
     value && value.forEach(item => {
       if (item.filter) {
-        this._filters.push({
+        const filter = {
           id: item.id,
           type: item.filter.field,
           label: item.header ?? '',
@@ -257,7 +257,11 @@ export class CrudComponent implements OnDestroy {
           range: item.filter.range,
           convertor: item.filter.convertor,
           default: item.filter.default ?? null
-        });
+        };
+        this._filters.push(filter);
+        if (filter.default) {
+          this._query.dynamic = (this._query.dynamic || '') + CrudFilterComponent.queryString(filter, filter.default);
+        }
       }
       if (item.editor) {
         this._editors.push({
