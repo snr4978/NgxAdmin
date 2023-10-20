@@ -45,7 +45,7 @@ export class UserComponent implements AfterViewInit {
       template: this._role,
       sortable: false,
       filter: { field: 'select', range: res.items },
-      editor: { field: 'multi-select', range: res.items, convertor: (val: any) => val.map((i: any) => i.id) }
+      editor: { field: 'multi-select', range: res.items, convertor: (val: any, io: 'r' | 'w') => io == 'r' ? val.map((i: any) => i.id) : val }
     }];
   }
 
